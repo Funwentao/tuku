@@ -23,9 +23,9 @@ public class Gallery extends DataEntity<Gallery> {
 	private String galleryCategoryId;		// 分类
 	private String vipStatus;		// vip
 	private Integer hits;		// 浏览量
-	private String likes;		// 点赞
+	private Integer likes;		// 点赞
 	private String commentId;		// 评论
-	private String praise;		// 赞赏
+	private Integer praise;		// 赞赏
 	private String status;		// 状态
 	private String imgs;        //图片
 
@@ -33,6 +33,16 @@ public class Gallery extends DataEntity<Gallery> {
 	private Date endInDate;
 
 	private String galleryCategory;
+
+	private GalleryCategory galleryCategorys;
+
+	public GalleryCategory getGalleryCategorys() {
+		return galleryCategorys;
+	}
+
+	public void setGalleryCategorys(GalleryCategory galleryCategorys) {
+		this.galleryCategorys = galleryCategorys;
+	}
 
 	private String commentsNum; //评论总数
 	private Comments comments;
@@ -147,12 +157,11 @@ public class Gallery extends DataEntity<Gallery> {
 		this.hits = hits;
 	}
 	
-	@Length(min=0, max=255, message="点赞长度必须介于 0 和 255 之间")
-	public String getLikes() {
+	public Integer getLikes() {
 		return likes;
 	}
 
-	public void setLikes(String likes) {
+	public void setLikes(Integer likes) {
 		this.likes = likes;
 	}
 	
@@ -165,12 +174,11 @@ public class Gallery extends DataEntity<Gallery> {
 		this.commentId = commentId;
 	}
 	
-	@Length(min=0, max=255, message="赞赏长度必须介于 0 和 255 之间")
-	public String getPraise() {
+	public Integer getPraise() {
 		return praise;
 	}
 
-	public void setPraise(String praise) {
+	public void setPraise(Integer praise) {
 		this.praise = praise;
 	}
 	

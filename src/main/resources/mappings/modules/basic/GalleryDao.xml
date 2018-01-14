@@ -143,5 +143,33 @@
 		hits = hits+1
 		WHERE id = #{id}
 	</update>
-	
+
+	<select id="getGalleryById" resultType="Gallery">
+		SELECT <include refid="galleryColumns"/>
+		FROM  gallery a
+		<include refid="galleryJoins"/>
+		WHERE a.id = #{id} AND a.del_flag != 1
+	</select>
+
+	<select id="getCommentById" resultType="com.thinkgem.jeesite.modules.basic.entity.Comments">
+		SELECT *
+		FROM comments co
+		WHERE co.gallery_id = #{id} AND co.del_flag != 1 ORDER BY co.create_date DESC
+	</select>
+
+
+	<select id="getCategoryList" resultType="com.thinkgem.jeesite.modules.basic.entity.GalleryCategory">
+		SELECT *
+		FROM gallery_category
+		WHERE del_flag != 1
+	</select>
+
+
+	<select id="getGalleryListByCategoryId" resultType="Gallery">
+		SELECT <include refid="galleryColumns"/>
+		FROM  gallery a
+		<include refid="galleryJoins"/>
+		WHERE a.gallery_category_id = #{galleryCategoryId} AND a.del_flag != 1 ORDER BY a.sort ASC
+	</select>
+
 </mapper>

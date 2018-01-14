@@ -17,6 +17,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.thinkgem.jeesite.common.config.Global;
@@ -26,7 +27,10 @@ import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.modules.basic.entity.Gallery;
 import com.thinkgem.jeesite.modules.basic.service.GalleryService;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 图库管理Controller
@@ -76,6 +80,57 @@ public class GalleryController extends BaseController {
 		model.addAttribute("galleryCategoryList",galleryCategoryList);
 		model.addAttribute("page", page);
 		return "modules/basic/galleryList";
+	}
+
+
+	@RequiresPermissions("basic:gallery:view")
+	@ResponseBody
+	@RequestMapping(value = "getIndexList")
+	public List<Gallery> getIndexList(Gallery gallery, HttpServletRequest request, HttpServletResponse response) {
+		List<Gallery> galleryList = galleryService.findList(gallery);
+		for(int i = 0;i<galleryList.size();i++){
+			String id = galleryList.get(i).getId();
+			Integer commentsNum =  galleryService.getCommentsNum(id);
+			String commentsNumString = Integer.toString(commentsNum);
+			galleryList.get(i).setCommentId(commentsNumString);
+		}
+		return galleryList;
+	}
+
+	@RequiresPermissions("basic:gallery:view")
+	@ResponseBody
+	@RequestMapping(value = "getGalleryById")
+	public HashMap<String, Object> getGalleryById(String id, HttpServletRequest request, HttpServletResponse response) {
+		HashMap<String,Object> jsonMap = new HashMap<String, Object>();
+		Gallery g = galleryService.getGalleryById(id);
+		jsonMap.put("cover_gallery",g.getCoverGallery());
+		jsonMap.put("imgs",g.getImgs());
+		jsonMap.put("title",g.getTitle());
+		jsonMap.put("create_date",g.getCreateDate());
+		jsonMap.put("category",g.getGalleryCategory());
+
+		List<Comments> commentsList= galleryService.getCommentById(id);
+
+		jsonMap.put("comments",commentsList);
+
+		return jsonMap;
+	}
+
+
+	@RequiresPermissions("basic:gallery:view")
+	@ResponseBody
+	@RequestMapping(value = "getCategoryList")
+	public List<GalleryCategory> getCategoryList(HttpServletRequest request, HttpServletResponse response) {
+		List<GalleryCategory> categoryList = galleryService.getCategoryList();
+		return categoryList;
+	}
+
+	@RequiresPermissions("basic:gallery:view")
+	@ResponseBody
+	@RequestMapping(value = "getGalleryListByCategoryId")
+	public List<Gallery> getGalleryListByCategoryId(String CategoryId,HttpServletRequest request, HttpServletResponse response) {
+		List<Gallery> galleryList = galleryService.getGalleryListByCategoryId(CategoryId);
+		return galleryList;
 	}
 
 	@RequiresPermissions("basic:gallery:view")

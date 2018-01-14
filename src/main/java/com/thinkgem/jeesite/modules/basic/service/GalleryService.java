@@ -5,6 +5,8 @@ package com.thinkgem.jeesite.modules.basic.service;
 
 import java.util.List;
 
+import com.thinkgem.jeesite.modules.basic.entity.Comments;
+import com.thinkgem.jeesite.modules.basic.entity.GalleryCategory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -61,5 +63,46 @@ public class GalleryService extends CrudService<GalleryDao, Gallery> {
 	public void updateHitsAddOne(String id) {
 		dao.updateHitsAddOne(id);
 	}
-	
+
+
+	/**
+	 * 通过图集id获取图集详情
+	 * @param id
+	 * @return
+	 */
+	@Transactional(readOnly = false)
+	public Gallery getGalleryById(String id) {
+		return dao.getGalleryById(id);
+	}
+
+
+	/**
+	 * 通过图集id获取图集详情
+	 * @param id
+	 * @return
+	 */
+	@Transactional(readOnly = false)
+	public List<Comments> getCommentById(String id) {
+		return dao.getCommentById(id);
+	}
+
+	/**
+	 * 返回所有分类列表
+	 * @param
+	 * @return
+	 */
+	@Transactional(readOnly = false)
+	public List<GalleryCategory> getCategoryList() {
+		return dao.getCategoryList();
+	}
+
+	/**
+	 * 通过分类名返回图集列表
+	 * @param
+	 * @return
+	 */
+	@Transactional(readOnly = false)
+	public List<Gallery> getGalleryListByCategoryId(String galleryCategoryId) {
+		return dao.getGalleryListByCategoryId(galleryCategoryId);
+	}
 }
