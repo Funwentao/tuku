@@ -42,5 +42,10 @@ public class WeixinUserInfoService extends CrudService<WeixinUserInfoDao, Weixin
 	public void delete(WeixinUserInfo weixinUserInfo) {
 		super.delete(weixinUserInfo);
 	}
+
+	@Transactional(readOnly = false)
+	public String getGradeByUserId(String openId) {
+		return dao.getGradeByUserId(openId);
+	}
 	
 }

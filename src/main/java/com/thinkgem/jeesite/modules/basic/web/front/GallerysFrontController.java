@@ -56,7 +56,7 @@ public class GallerysFrontController extends BaseController {
 
     @ResponseBody
     @RequestMapping(value = "getGalleryById")
-    public HashMap<String, Object> getGalleryById(String id, HttpServletRequest request, HttpServletResponse response) {
+    public HashMap<String, Object> getGalleryById(String id, String openId, HttpServletRequest request, HttpServletResponse response) {
         HashMap<String, Object> jsonMap = new HashMap<String, Object>();
         Gallery g = galleryService.getGalleryById(id);
         jsonMap.put("cover_gallery", g.getCoverGallery());
@@ -66,6 +66,10 @@ public class GallerysFrontController extends BaseController {
         jsonMap.put("category", g.getGalleryCategory());
 
         List<Comments> commentsList = galleryService.getCommentById(id);
+
+        String grade = weixinUserInfoService.getGradeByUserId(openId);
+
+        jsonMap.put("grade", grade);
 
         jsonMap.put("comments", commentsList);
 

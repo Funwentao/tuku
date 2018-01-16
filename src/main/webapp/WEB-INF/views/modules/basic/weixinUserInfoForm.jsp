@@ -39,7 +39,7 @@
 				<form:select path="grade" class="input-xlarge required" maxlength="64">
 					<form:option value="" label="请选择"/>
 					<c:forEach items="${servicesList}" var="s">
-						<form:option value="${s.id}">${s.serviceContent}</form:option>
+						<form:option value="${s.serviceContent}">${s.serviceContent}</form:option>
 					</c:forEach>
 				</form:select>
 			</div>

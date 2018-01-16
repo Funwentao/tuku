@@ -39,7 +39,7 @@
 					   onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',isShowClear:false});"/>
 			</li>
 			<li><label>等级：</label>
-				<form:input path="serviceContent" htmlEscape="false" maxlength="255" class="input-medium"/>
+				<form:input path="grade" htmlEscape="false" maxlength="255" class="input-medium"/>
 			</li>
 
 			<li><label>禁言：</label>
@@ -80,7 +80,7 @@
 					${weixinUserInfo.nickname}
 				</td>
 				<td>
-					${weixinUserInfo.serviceContent}
+					${weixinUserInfo.grade}
 				</td>
 				<td>
 					${weixinUserInfo.city}
