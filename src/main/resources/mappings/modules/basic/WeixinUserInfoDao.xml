@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.basic.dao.WeixinUserInfoDao">
+    
+	<sql id="weixinUserInfoColumns">
+		a.id AS "id",
+		a.openid AS "openid",
+		a.user_id AS "userId",
+		a.subscribe AS "subscribe",
+		a.subscribetime AS "subscribetime",
+		a.grade AS "grade",
+		a.nickname AS "nickname",
+		a.sex AS "sex",
+		a.country AS "country",
+		a.province AS "province",
+		a.city AS "city",
+		a.gossip AS "gossip",
+		a.language AS "language",
+		a.headimgurl AS "headimgurl",
+		a.status AS "status",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag",
+		s.service_content AS "serviceContent"
+	</sql>
+	
+	<sql id="weixinUserInfoJoins">
+		LEFT JOIN services s on s.id = a.grade
+	</sql>
+    
+	<select id="get" resultType="WeixinUserInfo">
+		SELECT 
+			<include refid="weixinUserInfoColumns"/>
+		FROM weixin_user_info a
+		<include refid="weixinUserInfoJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="WeixinUserInfo">
+		SELECT 
+			<include refid="weixinUserInfoColumns"/>
+		FROM weixin_user_info a
+		<include refid="weixinUserInfoJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="userId != null and userId != ''">
+				AND a.user_id = #{userId}
+			</if>
+			<if test="grade != null and grade != ''">
+				AND s.service_content LIKE
+					<if test="dbName == 'oracle'">'%'||#{grade}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{grade}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{serviceContent},'%')</if>
+			</if>
+			<if test="nickname != null and nickname != ''">
+				AND a.nickname LIKE 
+					<if test="dbName == 'oracle'">'%'||#{nickname}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{nickname}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{nickname},'%')</if>
+			</if>
+			<if test="gossip != null and gossip != ''">
+				AND a.gossip = #{gossip}
+			</if>
+			<if test="beginInDate != null and endInDate != null and beginInDate != '' and endInDate != ''">
+				AND a.create_date BETWEEN #{beginInDate} AND #{endInDate}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="WeixinUserInfo">
+		SELECT 
+			<include refid="weixinUserInfoColumns"/>
+		FROM weixin_user_info a
+		<include refid="weixinUserInfoJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO weixin_user_info(
+			id,
+			openid,
+			user_id,
+			subscribe,
+			subscribetime,
+			grade,
+			nickname,
+			sex,
+			country,
+			province,
+			city,
+			gossip,
+			language,
+			headimgurl
+		) VALUES (
+			#{id},
+			#{openid},
+			#{userId},
+			#{subscribe},
+			#{subscribetime},
+			"15764ff54b9c4514af0c94701588b17f",
+			#{nickname},
+			#{sex},
+			#{country},
+			#{province},
+			#{city},
+			0,
+			#{language},
+			#{headimgurl}
+		)
+	</insert>
+
+	<update id="update">
+		UPDATE weixin_user_info SET
+			grade = #{grade},
+			gossip = #{gossip}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE weixin_user_info SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

@@ -12,7 +12,6 @@ import java.util.Date;
 
 /**
  * 用户管理Entity
- * @author 方坤镇
  * @version 2018-01-09
  */
 public class Users extends DataEntity<Users> {

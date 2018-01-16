@@ -9,7 +9,6 @@ import com.thinkgem.jeesite.common.persistence.DataEntity;
 
 /**
  * 复选框Entity
- * @author 方坤镇
  * @version 2018-01-10
  */
 public class TestFuxuan extends DataEntity<TestFuxuan> {

@@ -10,7 +10,6 @@ import com.thinkgem.jeesite.common.persistence.DataEntity;
 
 /**
  * 服务管理Entity
- * @author 方坤镇
  * @version 2018-01-09
  */
 public class Services extends DataEntity<Services> {

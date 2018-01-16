@@ -24,7 +24,6 @@ import com.thinkgem.jeesite.modules.basic.service.TestWebtreeService;
 
 /**
  * 测试批量删除Controller
- * @author 方坤镇
  * @version 2018-01-10
  */
 @Controller

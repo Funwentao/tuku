@@ -15,7 +15,6 @@ import com.thinkgem.jeesite.modules.basic.dao.CommentsDao;
 
 /**
  * 评论表Service
- * @author 方坤镇
  * @version 2018-01-10
  */
 @Service

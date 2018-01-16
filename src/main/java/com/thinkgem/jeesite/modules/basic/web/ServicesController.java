@@ -24,7 +24,6 @@ import com.thinkgem.jeesite.modules.basic.service.ServicesService;
 
 /**
  * 服务管理Controller
- * @author 方坤镇
  * @version 2018-01-09
  */
 @Controller

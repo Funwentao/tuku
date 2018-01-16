@@ -16,7 +16,6 @@ import com.thinkgem.jeesite.modules.basic.dao.TestWebtreeDao;
 
 /**
  * 测试批量删除Service
- * @author 方坤镇
  * @version 2018-01-10
  */
 @Service

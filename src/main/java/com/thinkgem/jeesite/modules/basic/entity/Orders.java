@@ -11,7 +11,6 @@ import java.util.Date;
 
 /**
  * 订单表Entity
- * @author 方坤镇
  * @version 2018-01-10
  */
 public class Orders extends DataEntity<Orders> {

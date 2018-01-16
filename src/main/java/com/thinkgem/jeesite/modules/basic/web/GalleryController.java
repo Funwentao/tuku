@@ -34,7 +34,6 @@ import java.util.Map;
 
 /**
  * 图库管理Controller
- * @author 方坤镇
  * @version 2018-01-11
  */
 @Controller
@@ -83,7 +82,6 @@ public class GalleryController extends BaseController {
 	}
 
 
-	@RequiresPermissions("basic:gallery:view")
 	@ResponseBody
 	@RequestMapping(value = "getIndexList")
 	public List<Gallery> getIndexList(Gallery gallery, HttpServletRequest request, HttpServletResponse response) {

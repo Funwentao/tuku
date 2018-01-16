@@ -29,7 +29,6 @@ import java.util.List;
 
 /**
  * 评论表Controller
- * @author 方坤镇
  * @version 2018-01-10
  */
 @Controller

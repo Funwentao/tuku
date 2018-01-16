@@ -9,7 +9,6 @@ import com.thinkgem.jeesite.common.persistence.DataEntity;
 
 /**
  * 测试批量删除Entity
- * @author 方坤镇
  * @version 2018-01-10
  */
 public class TestWebtree extends DataEntity<TestWebtree> {

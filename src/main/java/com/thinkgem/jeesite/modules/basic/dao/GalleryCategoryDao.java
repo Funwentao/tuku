@@ -9,7 +9,6 @@ import com.thinkgem.jeesite.modules.basic.entity.GalleryCategory;
 
 /**
  * 图库分类管理DAO接口
- * @author 方坤镇
  * @version 2018-01-11
  */
 @MyBatisDao

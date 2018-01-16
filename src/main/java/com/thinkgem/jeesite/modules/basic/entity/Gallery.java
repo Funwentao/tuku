@@ -11,7 +11,6 @@ import java.util.Date;
 
 /**
  * 图库管理Entity
- * @author 方坤镇
  * @version 2018-01-11
  */
 public class Gallery extends DataEntity<Gallery> {

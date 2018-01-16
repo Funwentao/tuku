@@ -15,7 +15,6 @@ import com.thinkgem.jeesite.modules.basic.dao.OrdersDao;
 
 /**
  * 订单表Service
- * @author 方坤镇
  * @version 2018-01-10
  */
 @Service

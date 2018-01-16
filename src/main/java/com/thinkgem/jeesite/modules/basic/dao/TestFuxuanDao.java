@@ -9,7 +9,6 @@ import com.thinkgem.jeesite.modules.basic.entity.TestFuxuan;
 
 /**
  * 复选框DAO接口
- * @author 方坤镇
  * @version 2018-01-10
  */
 @MyBatisDao

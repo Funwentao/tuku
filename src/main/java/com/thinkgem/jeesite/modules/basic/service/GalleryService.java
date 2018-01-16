@@ -17,7 +17,6 @@ import com.thinkgem.jeesite.modules.basic.dao.GalleryDao;
 
 /**
  * 图库管理Service
- * @author 方坤镇
  * @version 2018-01-11
  */
 @Service

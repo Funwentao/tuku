@@ -9,7 +9,6 @@ import com.thinkgem.jeesite.common.persistence.DataEntity;
 
 /**
  * 图库分类管理Entity
- * @author 方坤镇
  * @version 2018-01-11
  */
 public class GalleryCategory extends DataEntity<GalleryCategory> {

@@ -15,7 +15,6 @@ import com.thinkgem.jeesite.modules.basic.dao.UsersDao;
 
 /**
  * 用户管理Service
- * @author 方坤镇
  * @version 2018-01-09
  */
 @Service

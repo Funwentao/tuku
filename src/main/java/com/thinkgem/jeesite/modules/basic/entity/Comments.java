@@ -12,7 +12,6 @@ import java.util.Date;
 
 /**
  * 评论表Entity
- * @author 方坤镇
  * @version 2018-01-10
  */
 public class Comments extends DataEntity<Comments> {
