@@ -1,11 +1,8 @@
 package com.thinkgem.jeesite.modules.basic.web.front;
 
 import com.thinkgem.jeesite.common.web.BaseController;
-import com.thinkgem.jeesite.modules.basic.entity.Comments;
-import com.thinkgem.jeesite.modules.basic.entity.Gallery;
-import com.thinkgem.jeesite.modules.basic.entity.WeixinUserInfo;
-import com.thinkgem.jeesite.modules.basic.service.GalleryService;
-import com.thinkgem.jeesite.modules.basic.service.WeixinUserInfoService;
+import com.thinkgem.jeesite.modules.basic.entity.*;
+import com.thinkgem.jeesite.modules.basic.service.*;
 import me.chanjar.weixin.common.api.WxConsts;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import me.chanjar.weixin.mp.api.WxMpService;
@@ -14,13 +11,11 @@ import me.chanjar.weixin.mp.bean.result.WxMpUser;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
@@ -41,6 +36,15 @@ public class GallerysFrontController extends BaseController {
     @Autowired
     private WxMpService wxMpService;
 
+    @Autowired
+    private CommentsService commentsService;
+
+    @Autowired
+    private LikesService likesService;
+
+    @Autowired
+    private CollectionService collectionService;
+
     @ResponseBody
     @RequestMapping(value = "getIndexList")
     public List<Gallery> getIndexList(Gallery gallery, HttpServletRequest request, HttpServletResponse response) {
@@ -56,7 +60,7 @@ public class GallerysFrontController extends BaseController {
 
     @ResponseBody
     @RequestMapping(value = "getGalleryById")
-    public HashMap<String, Object> getGalleryById(String id, String openId, HttpServletRequest request, HttpServletResponse response) {
+    public HashMap<String, Object> getGalleryById(String id, HttpSession session, HttpServletRequest request, HttpServletResponse response) {
         HashMap<String, Object> jsonMap = new HashMap<String, Object>();
         Gallery g = galleryService.getGalleryById(id);
         jsonMap.put("cover_gallery", g.getCoverGallery());
@@ -66,6 +70,12 @@ public class GallerysFrontController extends BaseController {
         jsonMap.put("category", g.getGalleryCategory());
 
         List<Comments> commentsList = galleryService.getCommentById(id);
+
+
+
+        WeixinUserInfo wxUser = (WeixinUserInfo)session.getAttribute("wxUser");
+
+        String openId = wxUser.getOpenid();
 
         String grade = weixinUserInfoService.getGradeByUserId(openId);
 
@@ -92,9 +102,94 @@ public class GallerysFrontController extends BaseController {
     }
 
     @ResponseBody
+    @RequestMapping(value = "insertComment",method = RequestMethod.POST)
+    public void insertComment(HttpSession session, String commentsContent,String galleryId,HttpServletRequest request, HttpServletResponse response){
+        WeixinUserInfo wxUser = (WeixinUserInfo)session.getAttribute("wxUser");
+        Comments c = new Comments();
+        String openId = wxUser.getOpenid();
+        c.setGalleryId(galleryId);
+        c.setUserId(openId);
+        c.setCommentsContent(commentsContent);
+        commentsService.save(c);
+
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "selectLikesByOpenidAndGalleryId",method = RequestMethod.POST)
+    public void selectLikesByOpenidAndGalleryId(HttpSession session,String galleryId,HttpServletRequest request, HttpServletResponse response){
+        WeixinUserInfo wxUser = (WeixinUserInfo)session.getAttribute("wxUser");
+        String openId = wxUser.getOpenid();
+        Likes l = new Likes();
+        l.setUserId(openId);
+        l.setGalleryId(galleryId);
+        Likes tempLike = likesService.selectLikesByOpenidAndGalleryId(l);
+        if(tempLike == null){
+            likesService.save(l);
+        }else{
+            if(tempLike.getDelFlag().equals("1")){
+                l.setDelFlag("0");
+                likesService.updateLikesByOpenidAndGalleryId(l);
+            }else{
+                l.setDelFlag("1");
+                likesService.updateLikesByOpenidAndGalleryId(l);
+            }
+        }
+
+    }
+
+
+    @ResponseBody
+    @RequestMapping(value = "selectCollectionsByOpenidAndGalleryId",method = RequestMethod.POST)
+    public void selectCollectionsByOpenidAndGalleryId(HttpSession session,String galleryId,HttpServletRequest request, HttpServletResponse response){
+        WeixinUserInfo wxUser = (WeixinUserInfo)session.getAttribute("wxUser");
+        String openId = wxUser.getOpenid();
+        Collection c = new Collection();
+        c.setUserId(openId);
+        c.setGalleryId(galleryId);
+        Collection tempCollection = collectionService.selectCollectionsByOpenidAndGalleryId(c);
+        if(tempCollection == null){
+            collectionService.save(c);
+        }else{
+            if(tempCollection.getDelFlag().equals("1")){
+                c.setDelFlag("0");
+                collectionService.updateCollectionsByOpenidAndGalleryId(c);
+            }else{
+                c.setDelFlag("1");
+                collectionService.updateCollectionsByOpenidAndGalleryId(c);
+            }
+        }
+
+    }
+
+
+    /**
+     * 获取用户的收藏表
+     * @param session
+     * @param request
+     * @param response
+     * @return
+     */
+
+    @ResponseBody
+    @RequestMapping(value = "selectCollectionsByGalleryid")
+    public Gallery selectCollectionsByGalleryid(HttpSession session,HttpServletRequest request, HttpServletResponse response) {
+        WeixinUserInfo wxUser = (WeixinUserInfo) session.getAttribute("wxUser");
+        String openId = wxUser.getOpenid();
+        List<Collection> collectionList = collectionService.selectCollectionsByOpenid(openId);
+        Gallery g = new Gallery();
+        for (int i = 0; i < collectionList.size(); i++) {
+            String galleryid = collectionList.get(i).getGalleryId();
+            g = collectionService.selectgalleryBygalleryId(galleryid);
+        }
+        return  g;
+    }
+
+
+
+    @ResponseBody
     @RequestMapping(value = "userInfo")
     public String userInfo(@RequestParam("code") String code,
-                           @RequestParam("state") String returnUrl) {
+                           @RequestParam("state") String returnUrl, HttpSession session) {
 
         WxMpOAuth2AccessToken wxMpOAuth2AccessToken = new WxMpOAuth2AccessToken();
         WxMpUser wxMpUser = new WxMpUser();
@@ -136,6 +231,14 @@ public class GallerysFrontController extends BaseController {
         }
 
         String openId = wxMpOAuth2AccessToken.getOpenId();
+        session.setAttribute("openId",openId);
+
+        //将登陆用户信息存入session
+        WeixinUserInfo wxUser = new WeixinUserInfo();
+        wxUser.setOpenid(openId);
+        session.setAttribute("wxUser",wxUser);
+
+
         return"redirect:"+returnUrl+"?openid"+openId;
     }
 

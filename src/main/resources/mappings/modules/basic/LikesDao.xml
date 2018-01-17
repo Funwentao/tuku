@@ -1,46 +1,44 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.thinkgem.jeesite.modules.basic.dao.CommentsDao">
+<mapper namespace="com.thinkgem.jeesite.modules.basic.dao.LikesDao">
     
-	<sql id="commentsColumns">
+	<sql id="likesColumns">
 		a.id AS "id",
+		a.user_id AS "userId",
 		a.gallery_id AS "galleryId",
-		a.comments_content AS "commentsContent",
+		a.likes_status AS "likesStatus",
 		a.status AS "status",
 		a.create_by AS "createBy.id",
 		a.create_date AS "createDate",
 		a.update_by AS "updateBy.id",
 		a.update_date AS "updateDate",
 		a.remarks AS "remarks",
-		a.del_flag AS "delFlag",
-		u.user_id AS "userId",
-		u.name AS "userName"
+		a.del_flag AS "delFlag"
 	</sql>
 	
-	<sql id="commentsJoins">
-		left join users u on u.user_id = a.user_id
+	<sql id="likesJoins">
 	</sql>
     
-	<select id="get" resultType="Comments">
+	<select id="get" resultType="Likes">
 		SELECT 
-			<include refid="commentsColumns"/>
-		FROM comments a
-		<include refid="commentsJoins"/>
+			<include refid="likesColumns"/>
+		FROM likes a
+		<include refid="likesJoins"/>
 		WHERE a.id = #{id}
 	</select>
-
-	<select id="findList" resultType="Comments">
+	
+	<select id="findList" resultType="Likes">
 		SELECT 
-			<include refid="commentsColumns"/>
-		FROM comments a
-		<include refid="commentsJoins"/>
+			<include refid="likesColumns"/>
+		FROM likes a
+		<include refid="likesJoins"/>
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
 			<if test="userId != null and userId != ''">
 				AND a.user_id = #{userId}
 			</if>
-			<if test="beginInDate != null and endInDate != null and beginInDate != '' and endInDate != ''">
-				AND a.create_date BETWEEN #{beginInDate} AND #{endInDate}
+			<if test="galleryId != null and galleryId != ''">
+				AND a.gallery_id = #{galleryId}
 			</if>
 		</where>
 		<choose>
@@ -53,11 +51,11 @@
 		</choose>
 	</select>
 	
-	<select id="findAllList" resultType="Comments">
+	<select id="findAllList" resultType="Likes">
 		SELECT 
-			<include refid="commentsColumns"/>
-		FROM comments a
-		<include refid="commentsJoins"/>
+			<include refid="likesColumns"/>
+		FROM likes a
+		<include refid="likesJoins"/>
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
 		</where>		
@@ -72,29 +70,40 @@
 	</select>
 	
 	<insert id="insert">
-		INSERT INTO comments(
+		INSERT INTO likes(
 			id,
 			user_id,
-			gallery_id,
-			comments_content
+			gallery_id
 		) VALUES (
 			#{id},
 			#{userId},
-			#{galleryId},
-			#{commentsContent}
+			#{galleryId}
 		)
 	</insert>
 	
 	<update id="update">
-		UPDATE comments SET 	
-			comments_content = #{commentsContent}
+		UPDATE likes SET 	
+			user_id = #{userId},
+			gallery_id = #{galleryId}
 		WHERE id = #{id}
 	</update>
 	
 	<update id="delete">
-		UPDATE comments SET 
+		UPDATE likes SET 
 			del_flag = #{DEL_FLAG_DELETE}
 		WHERE id = #{id}
 	</update>
 
+	<select id="selectLikesByOpenidAndGalleryId" resultType="Likes">
+		SELECT * from likes
+		WHERE user_id=#{userId} AND gallery_id=#{galleryId}
+	</select>
+
+
+	<update id="updateLikesByOpenidAndGalleryId">
+		UPDATE likes SET
+			del_flag = #{del}
+		WHERE user_id=#{userId} AND gallery_id=#{galleryId}
+	</update>
+	
 </mapper>

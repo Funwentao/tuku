@@ -42,5 +42,10 @@ public class CommentsService extends CrudService<CommentsDao, Comments> {
 	public void delete(Comments comments) {
 		super.delete(comments);
 	}
+
+//	@Transactional(readOnly = false)
+//	public int insert(Comments c) {
+//		return dao.insert(c);
+//	}
 	
 }

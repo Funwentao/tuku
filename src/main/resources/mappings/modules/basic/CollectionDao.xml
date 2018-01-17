@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.basic.dao.CollectionDao">
+    
+	<sql id="collectionColumns">
+		a.id AS "id",
+		a.user_id AS "userId",
+		a.gallery_id AS "galleryId",
+		a.status AS "status",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="collectionJoins">
+		LEFT JOIN gallery g on g.id = a.gallery_id
+	</sql>
+    
+	<select id="get" resultType="Collection">
+		SELECT 
+			<include refid="collectionColumns"/>
+		FROM collection a
+		<include refid="collectionJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="Collection">
+		SELECT 
+			<include refid="collectionColumns"/>
+		FROM collection a
+		<include refid="collectionJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="userId != null and userId != ''">
+				AND a.user_id = #{userId}
+			</if>
+			<if test="galleryId != null and galleryId != ''">
+				AND a.gallery_id = #{galleryId}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="Collection">
+		SELECT 
+			<include refid="collectionColumns"/>
+		FROM collection a
+		<include refid="collectionJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO collection(
+			id,
+			user_id,
+			gallery_id
+		) VALUES (
+			#{id},
+			#{userId},
+			#{galleryId}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE collection SET 	
+			user_id = #{userId},
+			gallery_id = #{galleryId}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE collection SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+
+	<select id="selectCollectionsByOpenidAndGalleryId" resultType="Likes">
+		SELECT * from collection
+		WHERE user_id=#{userId} AND gallery_id=#{galleryId}
+	</select>
+
+	<!--先根据openid查询所有的收藏表，再通过galleryid查询对应的图集-->
+	<select id="selectCollectionsByOpenid" resultType="Collection">
+		SELECT * from collection
+		WHERE user_id=#{userId}
+	</select>
+
+	<select id="selectgalleryBygalleryId" resultType="Gallery">
+		SELECT * from gallery
+		WHERE id=#{galleryId}
+	</select>
+
+	<update id="updateCollectionsByOpenidAndGalleryId">
+		UPDATE likes SET
+		del_flag = #{del}
+		WHERE user_id=#{userId} AND gallery_id=#{galleryId}
+	</update>
+	
+</mapper>

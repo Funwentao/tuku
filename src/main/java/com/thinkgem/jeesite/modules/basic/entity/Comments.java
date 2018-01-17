@@ -17,7 +17,7 @@ import java.util.Date;
 public class Comments extends DataEntity<Comments> {
 	
 	private static final long serialVersionUID = 1L;
-	private Integer userId;		// 用户ID
+	private String userId;		// 用户ID
 	private String galleryId;		// 图库ID
 	private String commentsContent;		// 评论内容
 	private String status;		// 状态
@@ -58,11 +58,11 @@ public class Comments extends DataEntity<Comments> {
 	}
 
 	@NotNull(message="用户ID不能为空")
-	public Integer getUserId() {
+	public String getUserId() {
 		return userId;
 	}
 
-	public void setUserId(Integer userId) {
+	public void setUserId(String userId) {
 		this.userId = userId;
 	}
 	
