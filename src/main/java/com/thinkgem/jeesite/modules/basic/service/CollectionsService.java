@@ -11,8 +11,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.service.CrudService;
-import com.thinkgem.jeesite.modules.basic.entity.Collection;
-import com.thinkgem.jeesite.modules.basic.dao.CollectionDao;
+import com.thinkgem.jeesite.modules.basic.entity.Collections;
+import com.thinkgem.jeesite.modules.basic.dao.CollectionsDao;
 
 /**
  * 收藏Service
@@ -21,42 +21,42 @@ import com.thinkgem.jeesite.modules.basic.dao.CollectionDao;
  */
 @Service
 @Transactional(readOnly = true)
-public class CollectionService extends CrudService<CollectionDao, Collection> {
+public class CollectionsService extends CrudService<CollectionsDao, Collections> {
 
-	public Collection get(String id) {
+	public Collections get(String id) {
 		return super.get(id);
 	}
 	
-	public List<Collection> findList(Collection collection) {
-		return super.findList(collection);
+	public List<Collections> findList(Collections collections) {
+		return super.findList(collections);
 	}
 	
-	public Page<Collection> findPage(Page<Collection> page, Collection collection) {
-		return super.findPage(page, collection);
-	}
-	
-	@Transactional(readOnly = false)
-	public void save(Collection collection) {
-		super.save(collection);
+	public Page<Collections> findPage(Page<Collections> page, Collections collections) {
+		return super.findPage(page, collections);
 	}
 	
 	@Transactional(readOnly = false)
-	public void delete(Collection collection) {
-		super.delete(collection);
+	public void save(Collections collections) {
+		super.save(collections);
+	}
+	
+	@Transactional(readOnly = false)
+	public void delete(Collections collections) {
+		super.delete(collections);
 	}
 
 	@Transactional(readOnly = false)
-	public Collection selectCollectionsByOpenidAndGalleryId(Collection collection) {
+	public Collections selectCollectionsByOpenidAndGalleryId(Collections collection) {
 		return dao.selectCollectionsByOpenidAndGalleryId(collection);
 	}
 
 	@Transactional(readOnly = false)
-	public void updateCollectionsByOpenidAndGalleryId(Collection collection) {
+	public void updateCollectionsByOpenidAndGalleryId(Collections collection) {
 		dao.updateCollectionsByOpenidAndGalleryId(collection);
 	}
 
 	@Transactional(readOnly = false)
-	public List<Collection> selectCollectionsByOpenid(String openId){
+	public List<Collections> selectCollectionsByOpenid(String openId){
 		return dao.selectCollectionsByOpenid(openId);
 	}
 

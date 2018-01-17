@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -43,7 +44,7 @@ public class GallerysFrontController extends BaseController {
     private LikesService likesService;
 
     @Autowired
-    private CollectionService collectionService;
+    private CollectionsService collectionsService;
 
     @ResponseBody
     @RequestMapping(value = "getIndexList")
@@ -143,19 +144,19 @@ public class GallerysFrontController extends BaseController {
     public void selectCollectionsByOpenidAndGalleryId(HttpSession session,String galleryId,HttpServletRequest request, HttpServletResponse response){
         WeixinUserInfo wxUser = (WeixinUserInfo)session.getAttribute("wxUser");
         String openId = wxUser.getOpenid();
-        Collection c = new Collection();
+        Collections c = new Collections();
         c.setUserId(openId);
         c.setGalleryId(galleryId);
-        Collection tempCollection = collectionService.selectCollectionsByOpenidAndGalleryId(c);
+        Collections tempCollection = collectionsService.selectCollectionsByOpenidAndGalleryId(c);
         if(tempCollection == null){
-            collectionService.save(c);
+            collectionsService.save(c);
         }else{
             if(tempCollection.getDelFlag().equals("1")){
                 c.setDelFlag("0");
-                collectionService.updateCollectionsByOpenidAndGalleryId(c);
+                collectionsService.updateCollectionsByOpenidAndGalleryId(c);
             }else{
                 c.setDelFlag("1");
-                collectionService.updateCollectionsByOpenidAndGalleryId(c);
+                collectionsService.updateCollectionsByOpenidAndGalleryId(c);
             }
         }
 
@@ -172,16 +173,19 @@ public class GallerysFrontController extends BaseController {
 
     @ResponseBody
     @RequestMapping(value = "selectCollectionsByGalleryid")
-    public Gallery selectCollectionsByGalleryid(HttpSession session,HttpServletRequest request, HttpServletResponse response) {
+    public ArrayList<HashMap>  selectCollectionsByGalleryid(HttpSession session,String openId,HttpServletRequest request, HttpServletResponse response) {
         WeixinUserInfo wxUser = (WeixinUserInfo) session.getAttribute("wxUser");
-        String openId = wxUser.getOpenid();
-        List<Collection> collectionList = collectionService.selectCollectionsByOpenid(openId);
-        Gallery g = new Gallery();
+        //String openId = wxUser.getOpenid();
+        List<Collections> collectionList = collectionsService.selectCollectionsByOpenid(openId);
+        ArrayList<HashMap> jsonList = new ArrayList<HashMap>();
         for (int i = 0; i < collectionList.size(); i++) {
-            String galleryid = collectionList.get(i).getGalleryId();
-            g = collectionService.selectgalleryBygalleryId(galleryid);
+            HashMap<String,Object> item = new HashMap<String, Object>();
+            item.put("collection",collectionList.get(i));
+            String galleryId = collectionList.get(i).getGalleryId();
+            item.put("gallery",collectionsService.selectgalleryBygalleryId(galleryId));
+            jsonList.add(item);
         }
-        return  g;
+        return  jsonList;
     }
 
 

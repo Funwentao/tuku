@@ -5,7 +5,7 @@ package com.thinkgem.jeesite.modules.basic.dao;
 
 import com.thinkgem.jeesite.common.persistence.CrudDao;
 import com.thinkgem.jeesite.common.persistence.annotation.MyBatisDao;
-import com.thinkgem.jeesite.modules.basic.entity.Collection;
+import com.thinkgem.jeesite.modules.basic.entity.Collections;
 import com.thinkgem.jeesite.modules.basic.entity.Gallery;
 
 import java.util.List;
@@ -16,12 +16,12 @@ import java.util.List;
  * @version 2018-01-17
  */
 @MyBatisDao
-public interface CollectionDao extends CrudDao<Collection> {
-    public Collection selectCollectionsByOpenidAndGalleryId(Collection c);
+public interface CollectionsDao extends CrudDao<Collections> {
+    public Collections selectCollectionsByOpenidAndGalleryId(Collections c);
 
-    public void updateCollectionsByOpenidAndGalleryId(Collection c);
+    public void updateCollectionsByOpenidAndGalleryId(Collections c);
 
-    public List<Collection> selectCollectionsByOpenid(String openId);
+    public List<Collections> selectCollectionsByOpenid(String userId);
 
     public Gallery selectgalleryBygalleryId(String galleryId);
 }

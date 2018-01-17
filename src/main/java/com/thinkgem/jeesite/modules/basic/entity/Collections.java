@@ -12,18 +12,18 @@ import com.thinkgem.jeesite.common.persistence.DataEntity;
  * @author fandaz
  * @version 2018-01-17
  */
-public class Collection extends DataEntity<Collection> {
+public class Collections extends DataEntity<Collections> {
 	
 	private static final long serialVersionUID = 1L;
 	private String userId;		// 用户ID
 	private String galleryId;		// 图集ID
 	private String status;		// 状态
 	
-	public Collection() {
+	public Collections() {
 		super();
 	}
 
-	public Collection(String id){
+	public Collections(String id){
 		super(id);
 	}
 
