@@ -41,4 +41,7 @@ public interface GalleryDao extends CrudDao<Gallery> {
     //通过分类名返回图集列表
     public List<Gallery> getGalleryListByCategoryId(String galleryCategoryId);
 
+    //通过galleryID汇总点赞数量
+    public Integer getLikesByGalleryId(String galleryId);
+
 }

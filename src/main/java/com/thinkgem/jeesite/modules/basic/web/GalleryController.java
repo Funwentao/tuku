@@ -69,10 +69,11 @@ public class GalleryController extends BaseController {
 		List<Gallery> gList= page.getList();
 
 		for(int i = 0;i<gList.size();i++){
-
 			String id = gList.get(i).getId();
 			Integer commentsNum =  galleryService.getCommentsNum(id);
 			String commentsNumString = Integer.toString(commentsNum);
+			Integer likesNum = galleryService.getLikesByGalleryId(id);
+			gList.get(i).setLikes(likesNum);
 			gList.get(i).setCommentId(commentsNumString);
 		}
 		page.setList(gList);

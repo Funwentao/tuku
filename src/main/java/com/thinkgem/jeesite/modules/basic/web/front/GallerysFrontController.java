@@ -46,6 +46,13 @@ public class GallerysFrontController extends BaseController {
     @Autowired
     private CollectionsService collectionsService;
 
+    /**
+     * 首页功能实现
+     * @param gallery
+     * @param request
+     * @param response
+     * @return
+     */
     @ResponseBody
     @RequestMapping(value = "getIndexList")
     public List<Gallery> getIndexList(Gallery gallery, HttpServletRequest request, HttpServletResponse response) {
@@ -54,11 +61,22 @@ public class GallerysFrontController extends BaseController {
             String id = galleryList.get(i).getId();
             Integer commentsNum = galleryService.getCommentsNum(id);
             String commentsNumString = Integer.toString(commentsNum);
+            Integer likesNum = galleryService.getLikesByGalleryId(id);
+            galleryList.get(i).setLikes(likesNum);
             galleryList.get(i).setCommentId(commentsNumString);
         }
         return galleryList;
     }
 
+    /**
+     * 通过传入的galleryID查询图集详情
+     * 浏览量功能实现
+     * @param id
+     * @param session
+     * @param request
+     * @param response
+     * @return
+     */
     @ResponseBody
     @RequestMapping(value = "getGalleryById")
     public HashMap<String, Object> getGalleryById(String id, HttpSession session, HttpServletRequest request, HttpServletResponse response) {
@@ -69,39 +87,74 @@ public class GallerysFrontController extends BaseController {
         jsonMap.put("title", g.getTitle());
         jsonMap.put("create_date", g.getCreateDate());
         jsonMap.put("category", g.getGalleryCategory());
-
         List<Comments> commentsList = galleryService.getCommentById(id);
-
-
-
+        for (int i = 0 ; i < commentsList.size(); i++){
+            String openIds = commentsList.get(i).getUserId();
+            String names = weixinUserInfoService.getNameByOpenId(openIds);
+            commentsList.get(i).setStatus(names);
+        }
         WeixinUserInfo wxUser = (WeixinUserInfo)session.getAttribute("wxUser");
-
         String openId = wxUser.getOpenid();
-
         String grade = weixinUserInfoService.getGradeByUserId(openId);
-
+        galleryService.updateHitsAddOne(id);
         jsonMap.put("grade", grade);
-
         jsonMap.put("comments", commentsList);
-
         return jsonMap;
     }
 
     /**
-     * 微信授权登陆
-     *
-     * @param returnUrl
+     * 通过openid获取用户所有信息
+     * @param session
+     * @param request
+     * @param response
      * @return
      */
-    @RequestMapping(value = "authorize")
-    public String authorize(@RequestParam("returnUrl") String returnUrl) {
-
-        String url = "http://fadaz.natapp1.cc/f/userInfo";
-        String redirectUrl = wxMpService.oauth2buildAuthorizationUrl(url, WxConsts.OAuth2Scope.SNSAPI_USERINFO, URLEncoder.encode(returnUrl));
-        return "redirect:" + redirectUrl;
+    @ResponseBody
+    @RequestMapping(value = "getUserInfoByOpenId")
+    public WeixinUserInfo getUserInfoByOpenId(HttpSession session,HttpServletRequest request, HttpServletResponse response) {
+        WeixinUserInfo wxUser = (WeixinUserInfo)session.getAttribute("wxUser");
+        String openId = wxUser.getOpenid();
+        WeixinUserInfo weixinUserInfo = weixinUserInfoService.getUserInfoByOpenId(openId);
+        return weixinUserInfo;
 
     }
 
+    /**
+     *
+     * 获取分类json数据
+     * @param request
+     * @param response
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "getCategoryList")
+    public List<GalleryCategory> getCategoryList(HttpServletRequest request, HttpServletResponse response) {
+        List<GalleryCategory> categoryList = galleryService.getCategoryList();
+        return categoryList;
+    }
+
+    /**
+     * 通过分类id获取图集信息
+     * @param CategoryId
+     * @param request
+     * @param response
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "getGalleryListByCategoryId")
+    public List<Gallery> getGalleryListByCategoryId(String CategoryId,HttpServletRequest request, HttpServletResponse response) {
+        List<Gallery> galleryList = galleryService.getGalleryListByCategoryId(CategoryId);
+        return galleryList;
+    }
+
+    /**
+     * 插入评论功能的实现
+     * @param session
+     * @param commentsContent
+     * @param galleryId
+     * @param request
+     * @param response
+     */
     @ResponseBody
     @RequestMapping(value = "insertComment",method = RequestMethod.POST)
     public void insertComment(HttpSession session, String commentsContent,String galleryId,HttpServletRequest request, HttpServletResponse response){
@@ -115,6 +168,15 @@ public class GallerysFrontController extends BaseController {
 
     }
 
+
+    /**
+     *
+     * 点赞功能的实现
+     * @param session
+     * @param galleryId
+     * @param request
+     * @param response
+     */
     @ResponseBody
     @RequestMapping(value = "selectLikesByOpenidAndGalleryId",method = RequestMethod.POST)
     public void selectLikesByOpenidAndGalleryId(HttpSession session,String galleryId,HttpServletRequest request, HttpServletResponse response){
@@ -138,7 +200,14 @@ public class GallerysFrontController extends BaseController {
 
     }
 
-
+    /**
+     * TODO 插入功能已实现 当数据存在时，无法将del修改为 “0” 或者 “1”提示转换类型错误 (错误已修复)
+     * 收藏功能的实现
+     * @param session
+     * @param galleryId
+     * @param request
+     * @param response
+     */
     @ResponseBody
     @RequestMapping(value = "selectCollectionsByOpenidAndGalleryId",method = RequestMethod.POST)
     public void selectCollectionsByOpenidAndGalleryId(HttpSession session,String galleryId,HttpServletRequest request, HttpServletResponse response){
@@ -159,9 +228,7 @@ public class GallerysFrontController extends BaseController {
                 collectionsService.updateCollectionsByOpenidAndGalleryId(c);
             }
         }
-
     }
-
 
     /**
      * 获取用户的收藏表
@@ -173,9 +240,9 @@ public class GallerysFrontController extends BaseController {
 
     @ResponseBody
     @RequestMapping(value = "selectCollectionsByGalleryid")
-    public ArrayList<HashMap>  selectCollectionsByGalleryid(HttpSession session,String openId,HttpServletRequest request, HttpServletResponse response) {
+    public ArrayList<HashMap>  selectCollectionsByGalleryid(HttpSession session,HttpServletRequest request, HttpServletResponse response) {
         WeixinUserInfo wxUser = (WeixinUserInfo) session.getAttribute("wxUser");
-        //String openId = wxUser.getOpenid();
+        String openId = wxUser.getOpenid();
         List<Collections> collectionList = collectionsService.selectCollectionsByOpenid(openId);
         ArrayList<HashMap> jsonList = new ArrayList<HashMap>();
         for (int i = 0; i < collectionList.size(); i++) {
@@ -189,21 +256,36 @@ public class GallerysFrontController extends BaseController {
     }
 
 
+    /**
+     * 微信授权登陆
+     *
+     * @param returnUrl
+     * @return
+     */
+    @RequestMapping(value = "authorize")
+    public String authorize(@RequestParam("returnUrl") String returnUrl) {
 
+        String url = "http://fadaz.natapp1.cc/f/userInfo";
+        String redirectUrl = wxMpService.oauth2buildAuthorizationUrl(url, WxConsts.OAuth2Scope.SNSAPI_USERINFO, URLEncoder.encode(returnUrl));
+        return "redirect:" + redirectUrl;
+    }
+
+    /**
+     * 微信授权模块，把用户数据存进数据库，并把openid存到seesion中
+     * @param code
+     * @param returnUrl
+     * @param session
+     * @return
+     */
     @ResponseBody
     @RequestMapping(value = "userInfo")
     public String userInfo(@RequestParam("code") String code,
                            @RequestParam("state") String returnUrl, HttpSession session) {
-
         WxMpOAuth2AccessToken wxMpOAuth2AccessToken = new WxMpOAuth2AccessToken();
         WxMpUser wxMpUser = new WxMpUser();
-
         try {
-
             wxMpOAuth2AccessToken = wxMpService.oauth2getAccessToken(code);
             wxMpUser = wxMpService.oauth2getUserInfo(wxMpOAuth2AccessToken, null);
-
-
 
             // TODO 与数据库进行对比，如果openid不存在，就插入，如果存在，则不插入
             WeixinUserInfo weixinUserInfos = new WeixinUserInfo();
@@ -213,7 +295,6 @@ public class GallerysFrontController extends BaseController {
                 if (wxMpUser.getOpenId().equals(openid)) {
                     return "false";
                 }
-
             }
             WeixinUserInfo weixinUserInfo = new WeixinUserInfo();
             weixinUserInfo.setOpenid(wxMpUser.getOpenId());
@@ -226,23 +307,16 @@ public class GallerysFrontController extends BaseController {
             weixinUserInfo.setProvince(wxMpUser.getProvince());
             weixinUserInfo.setSubscribe(wxMpUser.getSubscribe());
             weixinUserInfo.setSubscribetime(wxMpUser.getSubscribeTime());
-
             weixinUserInfoService.save(weixinUserInfo);
-
-
         } catch (WxErrorException e) {
             logger.error("【微信网页授权】{}", e);
         }
-
         String openId = wxMpOAuth2AccessToken.getOpenId();
         session.setAttribute("openId",openId);
-
         //将登陆用户信息存入session
         WeixinUserInfo wxUser = new WeixinUserInfo();
         wxUser.setOpenid(openId);
         session.setAttribute("wxUser",wxUser);
-
-
         return"redirect:"+returnUrl+"?openid"+openId;
     }
 

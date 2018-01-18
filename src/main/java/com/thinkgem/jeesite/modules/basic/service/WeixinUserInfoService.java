@@ -47,5 +47,16 @@ public class WeixinUserInfoService extends CrudService<WeixinUserInfoDao, Weixin
 	public String getGradeByUserId(String openId) {
 		return dao.getGradeByUserId(openId);
 	}
+
+	@Transactional(readOnly = false)
+	public String getNameByOpenId(String openId) {
+		return dao.getNameByOpenId(openId);
+	}
+
+	//根据用户的openid查询用户详细信息
+	@Transactional(readOnly = false)
+	public WeixinUserInfo getUserInfoByOpenId(String openId){
+		return dao.getUserInfoByOpenId(openId);
+	}
 	
 }

@@ -102,7 +102,7 @@
 
 	<update id="updateLikesByOpenidAndGalleryId">
 		UPDATE likes SET
-			del_flag = #{del}
+			del_flag = #{delFlag}
 		WHERE user_id=#{userId} AND gallery_id=#{galleryId}
 	</update>
 	

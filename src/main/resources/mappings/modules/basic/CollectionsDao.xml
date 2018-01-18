@@ -90,7 +90,7 @@
 		WHERE id = #{id}
 	</update>
 
-	<select id="selectCollectionsByOpenidAndGalleryId" resultType="Likes">
+	<select id="selectCollectionsByOpenidAndGalleryId" resultType="Collections">
 		SELECT * from collections
 		WHERE user_id=#{userId} AND gallery_id=#{galleryId}
 	</select>
@@ -107,8 +107,8 @@
 	</select>
 
 	<update id="updateCollectionsByOpenidAndGalleryId">
-		UPDATE likes SET
-		del_flag = #{del}
+		UPDATE collections SET
+		del_flag = #{delFlag}
 		WHERE user_id=#{userId} AND gallery_id=#{galleryId}
 	</update>
 	

@@ -104,4 +104,15 @@ public class GalleryService extends CrudService<GalleryDao, Gallery> {
 	public List<Gallery> getGalleryListByCategoryId(String galleryCategoryId) {
 		return dao.getGalleryListByCategoryId(galleryCategoryId);
 	}
+
+	/**
+	 * 通过galleryID汇总点赞数量
+	 * @param galleryId
+	 * @return
+	 */
+	@Transactional(readOnly = false)
+	public Integer getLikesByGalleryId(String galleryId){
+		return dao.getLikesByGalleryId(galleryId);
+	}
+
 }

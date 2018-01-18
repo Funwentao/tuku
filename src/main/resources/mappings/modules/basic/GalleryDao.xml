@@ -172,4 +172,10 @@
 		WHERE a.gallery_category_id = #{galleryCategoryId} AND a.del_flag != 1 ORDER BY a.sort ASC
 	</select>
 
+	<select id="getLikesByGalleryId" resultType="java.lang.Integer">
+		SELECT COUNT(*)
+		FROM likes li
+		WHERE li.gallery_id = #{id}
+	</select>
+
 </mapper>

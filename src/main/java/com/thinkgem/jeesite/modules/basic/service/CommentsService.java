@@ -43,9 +43,11 @@ public class CommentsService extends CrudService<CommentsDao, Comments> {
 		super.delete(comments);
 	}
 
-//	@Transactional(readOnly = false)
-//	public int insert(Comments c) {
-//		return dao.insert(c);
-//	}
+	//通过图集名称和用户的openID返回评论列表
+	@Transactional(readOnly = false)
+	public List<Comments> getCommentsByCategoryId(String galleryId){
+		return dao.getCommentsByCategoryId(galleryId);
+	};
+
 	
 }
