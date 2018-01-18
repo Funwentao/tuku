@@ -44,4 +44,8 @@ public interface GalleryDao extends CrudDao<Gallery> {
     //通过galleryID汇总点赞数量
     public Integer getLikesByGalleryId(String galleryId);
 
+    //计算收藏总数
+    public Integer getCollectionsNum(String id);
+
+
 }

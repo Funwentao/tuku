@@ -138,6 +138,12 @@
 		WHERE co.gallery_id = #{id}
 	</select>
 
+	<select id="getCollectionsNum" resultType="java.lang.Integer">
+		SELECT COUNT(*)
+		FROM collections cll
+		WHERE cll.gallery_id = #{id}
+	</select>
+
 	<update id="updateHitsAddOne">
 		update gallery set
 		hits = hits+1
@@ -161,7 +167,7 @@
 	<select id="getCategoryList" resultType="com.thinkgem.jeesite.modules.basic.entity.GalleryCategory">
 		SELECT *
 		FROM gallery_category
-		WHERE del_flag != 1
+		WHERE del_flag != 1 ORDER BY sort ASC
 	</select>
 
 

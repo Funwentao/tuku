@@ -115,4 +115,9 @@ public class GalleryService extends CrudService<GalleryDao, Gallery> {
 		return dao.getLikesByGalleryId(galleryId);
 	}
 
+	//计算收藏总数
+	public Integer getCollectionsNum(String id){
+		return dao.getCollectionsNum(id);
+	}
+
 }

@@ -53,6 +53,12 @@ public class WeixinUserInfoService extends CrudService<WeixinUserInfoDao, Weixin
 		return dao.getNameByOpenId(openId);
 	}
 
+	//根据openId查询用户头像
+	@Transactional(readOnly = false)
+	public String getHeadImgUrlByOpenId(String openId){
+		return dao.getHeadImgUrlByOpenId(openId);
+	}
+
 	//根据用户的openid查询用户详细信息
 	@Transactional(readOnly = false)
 	public WeixinUserInfo getUserInfoByOpenId(String openId){

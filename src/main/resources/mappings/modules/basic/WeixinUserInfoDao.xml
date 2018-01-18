@@ -152,6 +152,12 @@
 
 	</select>
 
+	<select id="getHeadImgUrlByOpenId" resultType="java.lang.String">
+		SELECT headimgurl FROM weixin_user_info
+		WHERE openid = #{openId}
+
+	</select>
+
 	<select id="getUserInfoByOpenId" resultType="WeixinUserInfo">
 		select * from weixin_user_info WHERE openid = #{openid};
 	</select>
