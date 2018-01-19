@@ -6,6 +6,7 @@ package com.thinkgem.jeesite.modules.basic.entity;
  */
 public class PayRequests {
 
+
     private String body; //商品名称
     private String total_fee; //金额，字符串类型，以分为单位，1000 分，即10 块钱
     private String product_id; //商品id，用于商户自己商品管理

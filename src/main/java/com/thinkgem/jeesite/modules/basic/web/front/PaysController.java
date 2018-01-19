@@ -122,6 +122,7 @@ public class PaysController {
         String sign  = SHA1(queryString).toUpperCase();
         map.put("sign",sign);
         return map;
+
     }
 
 
