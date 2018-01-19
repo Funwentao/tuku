@@ -21,18 +21,18 @@ import java.util.*;
 @RequestMapping("ggf")
 public class PaysController {
 
-    /**
-     * 转化为queryString形式
-     * @param s
-     * @return
-     */
-    static String urlEncodeUTF8(String s) {
-        try {
-            return URLEncoder.encode(s, "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            throw new UnsupportedOperationException(e);
-        }
-    }
+//    /**
+//     * 转化为queryString形式
+//     * @param s
+//     * @return
+//     */
+//    static String urlEncodeUTF8(String s) {
+//        try {
+//            return URLEncoder.encode(s, "UTF-8");
+//        } catch (UnsupportedEncodingException e) {
+//            throw new UnsupportedOperationException(e);
+//        }
+//    }
 
     /**
      * 转换为queryString
@@ -46,8 +46,8 @@ public class PaysController {
                 sb.append("&");
             }
             sb.append(String.format("%s=%s",
-                    urlEncodeUTF8(entry.getKey().toString()),
-                    urlEncodeUTF8(entry.getValue().toString())
+                    entry.getKey().toString(),
+                    entry.getValue().toString()
             ));
         }
         return sb.toString();
