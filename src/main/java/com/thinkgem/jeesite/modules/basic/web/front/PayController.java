@@ -22,7 +22,9 @@ import java.util.Random;
  */
 @Controller
 @Slf4j
+@RequestMapping("gg")
 public class PayController {
+
     @Autowired
     private BestPayServiceImpl bestPayService;
 
