@@ -25,8 +25,9 @@ public class Orders extends DataEntity<Orders> {
 	private Date endInDate;  //结束时间
 	private Integer usersId; //用户显示ID
 	private String userName; // 用户昵称
-	private String price; //价格
 	private String serviceContent; //服务名称
+	private String totalFee;  //订单金额
+	private String tradeNum; //订单号
 
 
 	
@@ -70,12 +71,20 @@ public class Orders extends DataEntity<Orders> {
 		this.userName = userName;
 	}
 
-	public String getPrice() {
-		return price;
+	public String getTotalFee() {
+		return totalFee;
 	}
 
-	public void setPrice(String price) {
-		this.price = price;
+	public void setTotalFee(String totalFee) {
+		this.totalFee = totalFee;
+	}
+
+	public String getTradeNum() {
+		return tradeNum;
+	}
+
+	public void setTradeNum(String tradeNum) {
+		this.tradeNum = tradeNum;
 	}
 
 	public String getServiceContent() {

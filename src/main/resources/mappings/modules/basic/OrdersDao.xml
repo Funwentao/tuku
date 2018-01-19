@@ -15,10 +15,11 @@
 		a.update_date AS "updateDate",
 		a.remarks AS "remarks",
 		a.del_flag AS "delFlag",
+		a.total_fee AS "totalFee",
+		a.trade_num AS "tradeNum",
 		u.user_id AS "usersId",
 		u.name AS "userName",
-		s.service_content AS "serviceContent",
-		s.price AS "price"
+		s.service_content AS "serviceContent"
 	</sql>
 	
 	<sql id="ordersJoins">
