@@ -1,7 +1,11 @@
 package com.thinkgem.jeesite.modules.basic.web.front;
 
+import com.lly835.bestpay.enums.BestPayTypeEnum;
+import com.lly835.bestpay.model.PayRequest;
+import com.lly835.bestpay.model.PayResponse;
 import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.modules.basic.entity.*;
+import com.thinkgem.jeesite.modules.basic.entity.Collections;
 import com.thinkgem.jeesite.modules.basic.service.*;
 import me.chanjar.weixin.common.api.WxConsts;
 import me.chanjar.weixin.common.exception.WxErrorException;
@@ -12,15 +16,14 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by fandaz on 2018/1/15
@@ -47,6 +50,39 @@ public class GallerysFrontController extends BaseController {
     @Autowired
     private CollectionsService collectionsService;
 
+    @Autowired
+    private OrdersService ordersService;
+
+    @Autowired
+    private ServicesService servicesService;
+
+
+
+    /**
+     * 网站首页
+     */
+    @RequestMapping(value = "index")
+    public String index() {
+        return "modules/basic/index";
+    }
+
+    /**
+     * 删除收藏
+     */
+    @RequestMapping("deleteCollections")
+    public void deleteCollections(HttpSession session,String openId,String galleryId,HttpServletRequest request, HttpServletResponse response) {
+        Collections collections = new Collections();
+        collections.setUserId(openId);
+        collections.setGalleryId(galleryId);
+//        Collections collections1 = collectionsService.selectCollectionsByOpenidAndGalleryId(collections);
+        collections.setDelFlag("1");
+        collectionsService.updateCollectionsByOpenidAndGalleryId(collections);
+    }
+
+
+
+
+
     /**
      * 首页功能实现
      * @param gallery
@@ -70,6 +106,11 @@ public class GallerysFrontController extends BaseController {
             galleryList.get(i).setStatus(collectionsNumString);
         }
         return galleryList;
+    }
+
+    @RequestMapping("createTest")
+    public ModelAndView pays() {
+        return new ModelAndView("modules/basic/create");
     }
 
     /**
@@ -133,12 +174,88 @@ public class GallerysFrontController extends BaseController {
      */
     @ResponseBody
     @RequestMapping(value = "getUserInfoByOpenId")
-    public WeixinUserInfo getUserInfoByOpenId(HttpSession session,HttpServletRequest request, HttpServletResponse response) {
+    public HashMap<String, String> getUserInfoByOpenId(HttpSession session,HttpServletRequest request, HttpServletResponse response) {
+        HashMap<String,String> jsonMap = new HashMap<String, String>();
         WeixinUserInfo wxUser = (WeixinUserInfo)session.getAttribute("wxUser");
         String openId = wxUser.getOpenid();
         WeixinUserInfo weixinUserInfo = weixinUserInfoService.getUserInfoByOpenId(openId);
-        return weixinUserInfo;
 
+        jsonMap.put("img",weixinUserInfo.getHeadimgurl());
+        jsonMap.put("nickName",weixinUserInfo.getNickname());
+        jsonMap.put("id",openId);
+
+        if(weixinUserInfo.getGrade().equals("普通会员")){
+            jsonMap.put("grade","你尚未开通会员");
+        }else{
+            Orders orders = new Orders();
+            orders.setUserId(openId);
+            //需要根据openId查询状态为1，然后根据update_date排序，返回第一个
+            List<Orders> ordersList = ordersService.findList(orders);
+
+            java.util.Collections.sort(ordersList, new Comparator<Orders>() {
+                    @Override
+                    public int compare(Orders o1, Orders o2) {
+                        try {
+                            Date dt1 = o1.getUpdateDate();
+                            Date dt2 = o1.getUpdateDate();
+                            if (dt1.getTime() > dt2.getTime()) {
+                                return 1;
+                            } else if (dt1.getTime() < dt2.getTime()) {
+                                return -1;
+                            } else {
+                                return 0;
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        return 0;
+                    }
+                }
+            );
+            Orders o = ordersList.get(0);
+
+
+            Services s = servicesService.get(o.getServiceId());
+            int temp = Integer.valueOf(s.getServiceTime());
+
+            if(temp==0){
+                jsonMap.put("grade",o.getServiceContent());
+            }else{
+                Long time1 = o.getUpdateDate().getTime();
+                Long time2 = new Date().getTime();
+                if(time1 + temp*30*24*60*60 - time2 <= 0){
+                    jsonMap.put("grade","你尚未开通会员");
+                    weixinUserInfo.setGrade("普通会员");
+                    weixinUserInfoService.save(weixinUserInfo);
+                }else{
+                    if(time1 + temp*30*24*60*60 - time2 < 10*24*60*60){
+                        int dateNum = (int)(time1 + temp*30*24*60*60 - time2)/(24*60*60);
+                        jsonMap.put("grade",o.getServiceContent()+",还有"+dateNum+"过期");
+                    }else{
+                        jsonMap.put("grade",o.getServiceContent());
+                    }
+                }
+
+            }
+
+        }
+
+        return jsonMap;
+
+    }
+
+
+    /**
+     * 获取服务列表
+     * @param services
+     * @return
+     */
+
+    @ResponseBody
+    @RequestMapping("getServicesList")
+    public List<Services> getServiceList(Services services){
+        List<Services> servicesList =  servicesService.findList(services);
+        return servicesList;
     }
 
     /**
@@ -222,7 +339,6 @@ public class GallerysFrontController extends BaseController {
     }
 
     /**
-     * TODO 插入功能已实现 当数据存在时，无法将del修改为 “0” 或者 “1”提示转换类型错误 (错误已修复)
      * 收藏功能的实现
      * @param session
      * @param galleryId

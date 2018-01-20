@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * Created by fandaz on 2018/1/16
+ * 微信配置证书
  */
 @Component
 public class WechatPayConfig {
@@ -21,12 +22,12 @@ public class WechatPayConfig {
     @Bean
     public WxPayH5Config wxPayH5Config() {
         WxPayH5Config wxPayH5Config = new WxPayH5Config();
-        wxPayH5Config.setAppId("f211a3db1f38e19db1bf3e500607deb4");
-        wxPayH5Config.setAppSecret("37195bb029765b0b55aa9cd9aa13096aa3088e8d");
-        wxPayH5Config.setMchId("");
-        wxPayH5Config.setMchKey("");
-        wxPayH5Config.setKeyPath("");
-        wxPayH5Config.setNotifyUrl("http://fadaz.natapp1.cc/pay/notify");
+        wxPayH5Config.setAppId("wxf8f80c175179dfb7");
+        wxPayH5Config.setAppSecret("c4906186fdabe67a83027ca21c0ff0b0");
+        wxPayH5Config.setMchId("1395938002");
+        wxPayH5Config.setMchKey("T1YCE9pFAxebtQBbnDf2VkTfU8okIoIF");
+        wxPayH5Config.setKeyPath("F:/tuku/tuku/src/main/resources/apiclient_cert.p12");
+        wxPayH5Config.setNotifyUrl("http://p.handanyida.top/pays/notifys");
         return wxPayH5Config;
     }
 }

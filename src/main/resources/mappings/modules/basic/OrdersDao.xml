@@ -89,12 +89,14 @@
 			user_id,
 			order_num,
 			service_id,
+			total_fee,
 			payment_status
 		) VALUES (
 			#{id},
 			#{userId},
 			#{orderNum},
 			#{serviceId},
+			#{totalFee},
 			#{paymentStatus}
 		)
 	</insert>
