@@ -64,5 +64,61 @@ public class WeixinUserInfoService extends CrudService<WeixinUserInfoDao, Weixin
 	public WeixinUserInfo getUserInfoByOpenId(String openId){
 		return dao.getUserInfoByOpenId(openId);
 	}
-	
+
+
+	@Transactional(readOnly = false)
+	public Integer getNewUserDay(){
+		return dao.getNewUserDay();
+	}
+
+	public Integer getNewUserMonth(){
+		return dao.getNewUserMonth();
+	}
+	public Integer getNewUserAll(){
+		return dao.getNewUserAll();
+	}
+
+	public Integer getUserHZGradeDay(){
+		return dao.getUserHZGradeDay();
+	}
+	public Integer getUserZSGradeDay(){
+		return dao.getUserZSGradeDay();
+	}
+	public Integer getUserBJGradeDay(){
+		return dao.getUserBJGradeDay();
+	}
+	public Integer getUserZZGradeDay(){
+		return dao.getUserZZGradeDay();
+	}
+
+	public Integer getUserHZGradeMonth(){
+		return dao.getUserHZGradeMonth();
+	}
+	public Integer getUserZSGradeMonth(){
+		return dao.getUserZSGradeMonth();
+	}
+	public Integer getUserBJGradeMonth(){
+		return dao.getUserBJGradeMonth();
+	}
+	public Integer getUserZZGradeMonth(){
+		return dao.getUserZZGradeMonth();
+	}
+
+	public Integer getUserHZGradeAll(){
+		return dao.getUserHZGradeAll();
+	}
+	public Integer getUserZSGradeAll(){
+		return dao.getUserZSGradeAll();
+	}
+	public Integer getUserBJGradeAll(){
+		return dao.getUserBJGradeAll();
+	}
+	public Integer getUserZZGradeAll(){
+		return dao.getUserZZGradeAll();
+	}
+
+
+
+
+
 }

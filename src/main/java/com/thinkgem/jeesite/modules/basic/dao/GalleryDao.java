@@ -47,5 +47,9 @@ public interface GalleryDao extends CrudDao<Gallery> {
     //计算收藏总数
     public Integer getCollectionsNum(String id);
 
+    public Integer getDayHits();
+    public Integer getMonthHits();
+    public Integer getAllHits();
+
 
 }

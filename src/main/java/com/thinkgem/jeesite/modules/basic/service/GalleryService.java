@@ -120,4 +120,14 @@ public class GalleryService extends CrudService<GalleryDao, Gallery> {
 		return dao.getCollectionsNum(id);
 	}
 
+	public Integer getDayHits(){
+		return dao.getDayHits();
+	}
+	public Integer getMonthHits(){
+		return dao.getMonthHits();
+	}
+	public Integer getAllHits(){
+		return dao.getAllHits();
+	}
+
 }

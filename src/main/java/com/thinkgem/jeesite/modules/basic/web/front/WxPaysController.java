@@ -21,7 +21,7 @@ import java.util.Random;
 /**
  * Created by asus on 2018/1/20.
  */
-
+@RequestMapping("pays")
 @Controller
 public class WxPaysController {
 
@@ -34,7 +34,7 @@ public class WxPaysController {
     /**
      * 发起支付
      */
-    @RequestMapping(value = "pays")
+    @RequestMapping(value = "creates")
     public ModelAndView pay( String openid, Map<String, Object> map,String serviceId,double totalFee) {
         PayRequest request = new PayRequest();
         Random random = new Random();

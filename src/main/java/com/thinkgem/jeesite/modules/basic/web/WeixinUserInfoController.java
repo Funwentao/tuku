@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.thinkgem.jeesite.modules.basic.entity.Services;
+import com.thinkgem.jeesite.modules.basic.service.GalleryService;
+import com.thinkgem.jeesite.modules.basic.service.OrdersService;
 import com.thinkgem.jeesite.modules.basic.service.ServicesService;
 import me.chanjar.weixin.common.api.WxConsts;
 import me.chanjar.weixin.common.exception.WxErrorException;
@@ -42,6 +44,12 @@ public class WeixinUserInfoController extends BaseController {
 
 	@Autowired
 	private WeixinUserInfoService weixinUserInfoService;
+
+	@Autowired
+	private OrdersService ordersService;
+
+	@Autowired
+	private GalleryService galleryService;
 
 	@Autowired
 	private WxMpService wxMpService;

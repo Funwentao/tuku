@@ -184,4 +184,18 @@
 		WHERE li.gallery_id = #{id}
 	</select>
 
+	<!--数据统计，浏览量-->
+	<select id="getDayHits" resultType="java.lang.Integer">
+		select sum(hits) from gallery where date(update_date) = date(now());
+	</select>
+
+	<select id="getMonthHits" resultType="java.lang.Integer">
+		select sum(hits) from gallery where MONTH(update_date) = MONTH(CURDATE()) AND YEAR(update_date) = YEAR(CURDATE());
+	</select>
+
+	<select id="getAllHits" resultType="java.lang.Integer">
+		SELECT sum(hits) from gallery
+	</select>
+
+
 </mapper>

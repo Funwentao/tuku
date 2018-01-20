@@ -13,5 +13,15 @@ import com.thinkgem.jeesite.modules.basic.entity.Orders;
  */
 @MyBatisDao
 public interface OrdersDao extends CrudDao<Orders> {
+
+
+
+    public Integer getOrderDay();
+    public Integer getOrderMonth();
+    public Integer getOrderAll();
+
+    public Integer getTotalFeeDay();
+    public Integer getTotalFeeMonth();
+    public Integer getTotalFeeAll();
 	
 }

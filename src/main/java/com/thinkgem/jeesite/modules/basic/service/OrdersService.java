@@ -42,5 +42,28 @@ public class OrdersService extends CrudService<OrdersDao, Orders> {
 	public void delete(Orders orders) {
 		super.delete(orders);
 	}
-	
+
+
+
+	public Integer getOrderDay(){
+		return dao.getOrderDay();
+	}
+	public Integer getOrderMonth(){
+		return dao.getOrderMonth();
+	}
+	public Integer getOrderAll(){
+		return dao.getOrderAll();
+	}
+
+	public Integer getTotalFeeDay(){
+		return dao.getTotalFeeDay();
+	}
+	public Integer getTotalFeeMonth(){
+		return dao.getTotalFeeMonth();
+	}
+	public Integer getTotalFeeAll(){
+		return dao.getTotalFeeAll();
+	}
+
+
 }

@@ -19,7 +19,6 @@
 <body>
 	<ul class="nav nav-tabs">
 		<li class="active"><a href="${ctx}/basic/orders/">订单列表</a></li>
-		<shiro:hasPermission name="basic:orders:edit"><li><a href="${ctx}/basic/orders/form">订单添加</a></li></shiro:hasPermission>
 	</ul>
 	<form:form id="searchForm" modelAttribute="orders" action="${ctx}/basic/orders/" method="post" class="breadcrumb form-search">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
@@ -33,10 +32,10 @@
 			</li>
 			<li><label>时间：</label>
 				<input name="beginInDate" type="text" readonly="readonly" maxlength="20" class="input-medium Wdate"
-					   value="<fmt:formatDate value="${users.beginInDate}" pattern="yyyy-MM-dd HH:mm:ss"/>"
+					   value="<fmt:formatDate value="${orders.beginInDate}" pattern="yyyy-MM-dd HH:mm:ss"/>"
 					   onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',isShowClear:false});"/> -
 				<input name="endInDate" type="text" readonly="readonly" maxlength="20" class="input-medium Wdate"
-					   value="<fmt:formatDate value="${users.endInDate}" pattern="yyyy-MM-dd HH:mm:ss"/>"
+					   value="<fmt:formatDate value="${orders.endInDate}" pattern="yyyy-MM-dd HH:mm:ss"/>"
 					   onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',isShowClear:false});"/>
 			</li>
 			<li><label>状态：</label>
@@ -69,7 +68,7 @@
 			<tr>
 
 				<td>
-					${orders.usersId}
+					${orders.userId}
 				</td>
 				<td>
 					${orders.userName}
@@ -81,7 +80,7 @@
 					${orders.serviceContent}
 				</td>
 				<td>
-					${orders.price}
+					${orders.totalFee}
 				</td>
 				<td>
 					<fmt:formatDate value="${orders.createDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
@@ -89,10 +88,10 @@
 				<td>
 						${fns:getDictLabel(orders.paymentStatus, 'payment_status', '')}
 				</td>
-				<shiro:hasPermission name="basic:orders:edit"><td>
-    				<a href="${ctx}/basic/orders/form?id=${orders.id}">修改</a>
-					<a href="${ctx}/basic/orders/delete?id=${orders.id}" onclick="return confirmx('确认要删除该订单吗？', this.href)">删除</a>
-				</td></shiro:hasPermission>
+				<%--<shiro:hasPermission name="basic:orders:edit"><td>--%>
+    				<%--<a href="${ctx}/basic/orders/form?id=${orders.id}">修改</a>--%>
+					<%--<a href="${ctx}/basic/orders/delete?id=${orders.id}" onclick="return confirmx('确认要删除该订单吗？', this.href)">删除</a>--%>
+				<%--</td></shiro:hasPermission>--%>
 			</tr>
 		</c:forEach>
 		</tbody>

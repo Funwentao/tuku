@@ -17,13 +17,13 @@
 		a.del_flag AS "delFlag",
 		a.total_fee AS "totalFee",
 		a.trade_num AS "tradeNum",
-		u.user_id AS "usersId",
-		u.name AS "userName",
-		s.service_content AS "serviceContent"
+		u.nickname AS "userName",
+		s.service_content AS "serviceContent",
+		s.price AS "price"
 	</sql>
 	
 	<sql id="ordersJoins">
-		left join users u on u.id = a.user_id
+		left join weixin_user_info u on u.id = a.user_id
 		left join services s on s.id = a.service_id
 	</sql>
     
@@ -43,7 +43,7 @@
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
 			<if test="usersId != null and usersId != ''">
-				AND u.user_id = #{usersId}
+				AND a.user_id = #{userId}
 			</if>
 			<if test="serviceContent != null and serviceContent != ''">
 				AND s.service_content LIKE #{serviceContent}
@@ -115,5 +115,31 @@
 			del_flag = #{DEL_FLAG_DELETE}
 		WHERE id = #{id}
 	</update>
-	
+
+	<select id="getOrderDay" resultType="java.lang.Integer">
+		select count(*) from orders where date(update_date) = date(now()) and payment_status = 1
+	</select>
+
+	<select id="getTotalFeeDay" resultType="java.lang.Integer">
+		select sum(total_fee) from orders where date(update_date) = date(now()) and payment_status = 1
+	</select>
+
+	<select id="getOrderMonth" resultType="java.lang.Integer">
+		select count(*) from orders where MONTH(update_date) = MONTH(CURDATE()) AND YEAR(update_date) = YEAR(CURDATE()) and payment_status = 1
+	</select>
+
+	<select id="getTotalFeeMonth" resultType="java.lang.Integer">
+		select sum(total_fee) from orders where MONTH(update_date) = MONTH(CURDATE()) AND YEAR(update_date) = YEAR(CURDATE()) and payment_status = 1
+	</select>
+
+	<select id="getOrderAll" resultType="java.lang.Integer">
+		select count(*) from orders WHERE payment_status = 1
+	</select>
+
+	<select id="getTotalFeeAll" resultType="java.lang.Integer">
+		select sum(total_fee) from orders WHERE payment_status = 1
+	</select>
+
+
+
 </mapper>

@@ -26,5 +26,32 @@ public interface WeixinUserInfoDao extends CrudDao<WeixinUserInfo> {
 
     //根据用户的openid查询用户详细信息
     public WeixinUserInfo getUserInfoByOpenId(String openId);
+
+    public Integer getNewUserDay();
+    public Integer getNewUserMonth();
+    public Integer getNewUserAll();
+
+    public Integer getUserHZGradeDay();
+    public Integer getUserZSGradeDay();
+    public Integer getUserBJGradeDay();
+    public Integer getUserZZGradeDay();
+
+    public Integer getUserHZGradeMonth();
+    public Integer getUserZSGradeMonth();
+    public Integer getUserBJGradeMonth();
+    public Integer getUserZZGradeMonth();
+
+    public Integer getUserHZGradeAll();
+    public Integer getUserZSGradeAll();
+    public Integer getUserBJGradeAll();
+    public Integer getUserZZGradeAll();
+
+
+
+
+
+
+
+
 	
 }

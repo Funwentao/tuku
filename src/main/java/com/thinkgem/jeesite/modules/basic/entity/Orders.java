@@ -28,6 +28,7 @@ public class Orders extends DataEntity<Orders> {
 	private String serviceContent; //服务名称
 	private String totalFee;  //订单金额
 	private String tradeNum; //订单号
+	private String price;
 
 
 	

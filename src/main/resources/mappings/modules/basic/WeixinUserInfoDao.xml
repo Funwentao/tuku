@@ -161,5 +161,67 @@
 	<select id="getUserInfoByOpenId" resultType="WeixinUserInfo">
 		select * from weixin_user_info WHERE openid = #{openid};
 	</select>
+
+	<select id="getNewUserDay" resultType="java.lang.Integer">
+		select count(openID) from weixin_user_info where date(create_date) = date(now());
+	</select>
+
+	<select id="getNewUserMonth" resultType="java.lang.Integer">
+		select count(openID) from weixin_user_info where MONTH(create_date) = MONTH(CURDATE()) AND YEAR(create_date) = YEAR(CURDATE());
+	</select>
+
+	<select id="getNewUserAll" resultType="java.lang.Integer">
+		SELECT COUNT(openID) from weixin_user_info
+	</select>
+
+	<select id="getUserHZGradeDay" resultType="java.lang.Integer">
+		select count(grade) from weixin_user_info where date(update_date) = date(now()) and grade="黄金会员";
+	</select>
+
+	<select id="getUserZSGradeDay" resultType="java.lang.Integer">
+		select count(grade) from weixin_user_info where date(update_date) = date(now()) and grade="钻石会员";
+	</select>
+
+	<select id="getUserBJGradeDay" resultType="java.lang.Integer">
+		select count(grade) from weixin_user_info where date(update_date) = date(now()) and grade="铂金会员";
+	</select>
+
+	<select id="getUserZZGradeDay" resultType="java.lang.Integer">
+		select count(grade) from weixin_user_info where date(update_date) = date(now()) and grade="至尊会员";
+	</select>
+
+	<select id="getUserHZGradeMonth" resultType="java.lang.Integer">
+		select count(grade) from weixin_user_info where MONTH(update_date) = MONTH(CURDATE()) AND YEAR(update_date) = YEAR(CURDATE()) and grade="黄金会员";
+	</select>
+
+	<select id="getUserZSGradeMonth" resultType="java.lang.Integer">
+		select count(grade) from weixin_user_info where MONTH(update_date) = MONTH(CURDATE()) AND YEAR(update_date) = YEAR(CURDATE()) and grade="钻石会员";
+	</select>
+
+	<select id="getUserBJGradeMonth" resultType="java.lang.Integer">
+		select count(grade) from weixin_user_info where MONTH(update_date) = MONTH(CURDATE()) AND YEAR(update_date) = YEAR(CURDATE()) and grade="铂金会员";
+	</select>
+
+	<select id="getUserZZGradeMonth" resultType="java.lang.Integer">
+		select count(grade) from weixin_user_info where MONTH(update_date) = MONTH(CURDATE()) AND YEAR(update_date) = YEAR(CURDATE()) and grade="至尊会员";
+	</select>
+
+	<select id="getUserHZGradeAll" resultType="java.lang.Integer">
+		select count(grade) from weixin_user_info WHERE grade="黄金会员";
+	</select>
+
+	<select id="getUserZSGradeAll" resultType="java.lang.Integer">
+		select count(grade) from weixin_user_info where grade="钻石会员";
+	</select>
+
+	<select id="getUserBJGradeAll" resultType="java.lang.Integer">
+		select count(grade) from weixin_user_info where grade="铂金会员";
+	</select>
+
+	<select id="getUserZZGradeAll" resultType="java.lang.Integer">
+		select count(grade) from weixin_user_info where grade="至尊会员";
+	</select>
+
+
 	
 </mapper>

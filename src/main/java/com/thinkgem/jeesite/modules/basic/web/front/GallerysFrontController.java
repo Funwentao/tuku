@@ -55,9 +55,6 @@ public class GallerysFrontController extends BaseController {
 
     @Autowired
     private ServicesService servicesService;
-
-
-
     /**
      * 网站首页
      */
@@ -78,9 +75,6 @@ public class GallerysFrontController extends BaseController {
         collections.setDelFlag("1");
         collectionsService.updateCollectionsByOpenidAndGalleryId(collections);
     }
-
-
-
 
 
     /**
@@ -127,12 +121,6 @@ public class GallerysFrontController extends BaseController {
     public HashMap<String, Object> getGalleryById(String id, HttpSession session,String openId, HttpServletRequest request, HttpServletResponse response) {
         HashMap<String, Object> jsonMap = new HashMap<String, Object>();
         Gallery g = galleryService.getGalleryById(id);
-//        jsonMap.put("collections",g.getStatus());
-//        jsonMap.put("cover_gallery", g.getCoverGallery());
-//        jsonMap.put("imgs", g.getImgs());
-//        jsonMap.put("title", g.getTitle());
-//        jsonMap.put("create_date", g.getCreateDate());
-//        jsonMap.put("category", g.getGalleryCategory());
         List<Gallery> galleryList = galleryService.findList(g);
         for (int i = 0; i < galleryList.size(); i++) {
             String gId = galleryList.get(i).getId();
@@ -402,7 +390,7 @@ public class GallerysFrontController extends BaseController {
     @RequestMapping(value = "authorize")
     public String authorize(@RequestParam("returnUrl") String returnUrl) {
 
-        String url = "http://fadaz.natapp1.cc/gg/userInfo";
+        String url = "http://p.handanyida.top/gg/userInfo";
         String redirectUrl = wxMpService.oauth2buildAuthorizationUrl(url, WxConsts.OAuth2Scope.SNSAPI_USERINFO, URLEncoder.encode(returnUrl));
         return "redirect:" + redirectUrl;
     }
@@ -430,7 +418,7 @@ public class GallerysFrontController extends BaseController {
             for (int i = 0; i < weixinUserInfoList.size(); i++) {
                 String openid = weixinUserInfoList.get(i).getOpenid();
                 if (wxMpUser.getOpenId().equals(openid)) {
-                    return "false";
+                    return "redirect:http://p.handanyida.top/gg/index" ;
                 }
             }
             WeixinUserInfo weixinUserInfo = new WeixinUserInfo();
@@ -454,7 +442,7 @@ public class GallerysFrontController extends BaseController {
         WeixinUserInfo wxUser = new WeixinUserInfo();
         wxUser.setOpenid(openId);
         session.setAttribute("wxUser",wxUser);
-        return"redirect:"+returnUrl+"?openid"+openId;
+        return "redirect:http://p.handanyida.top/gg/index";
     }
 
 }
