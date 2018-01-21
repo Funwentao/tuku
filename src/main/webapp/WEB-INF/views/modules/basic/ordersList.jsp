@@ -25,7 +25,7 @@
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
 		<ul class="ul-form">
 			<li><label>用户ID：</label>
-				<form:input path="usersId" htmlEscape="false" maxlength="11" class="input-medium"/>
+				<form:input path="userId" htmlEscape="false" maxlength="11" class="input-medium"/>
 			</li>
 			<li><label>服务：</label>
 				<form:input path="serviceContent" htmlEscape="false" maxlength="255" class="input-medium"/>

@@ -107,10 +107,10 @@
 			#{sort},
 			#{galleryCategoryId},
 			#{vipStatus},
-			#{hits},
+			0,
 			#{likes},
 			#{commentId},
-			#{praise},
+			0,
 			#{imgs}
 		)
 	</insert>

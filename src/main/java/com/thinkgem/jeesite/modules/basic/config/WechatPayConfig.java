@@ -26,7 +26,7 @@ public class WechatPayConfig {
         wxPayH5Config.setAppSecret("c4906186fdabe67a83027ca21c0ff0b0");
         wxPayH5Config.setMchId("1395938002");
         wxPayH5Config.setMchKey("T1YCE9pFAxebtQBbnDf2VkTfU8okIoIF");
-        wxPayH5Config.setKeyPath("F:/tuku/tuku/src/main/resources/apiclient_cert.p12");
+        wxPayH5Config.setKeyPath("/var/wxconfig/apiclient_cert.p12");
         wxPayH5Config.setNotifyUrl("http://p.handanyida.top/pays/notifys");
         return wxPayH5Config;
     }

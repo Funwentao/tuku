@@ -23,8 +23,8 @@ public class WechatMpConfig {
     @Bean
     public WxMpConfigStorage wxMpConfigStorage(){
         WxMpInMemoryConfigStorage wxMpInMemoryConfigStorage = new WxMpInMemoryConfigStorage();
-        wxMpInMemoryConfigStorage.setAppId("wx6cfd4bac70fe9024");
-        wxMpInMemoryConfigStorage.setSecret("88f96c528fe678cb5ee0da4952c06e62");
+        wxMpInMemoryConfigStorage.setAppId("wxf8f80c175179dfb7");
+        wxMpInMemoryConfigStorage.setSecret("c4906186fdabe67a83027ca21c0ff0b0");
         return wxMpInMemoryConfigStorage;
     }
 }

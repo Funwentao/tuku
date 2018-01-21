@@ -42,7 +42,7 @@
 		<include refid="ordersJoins"/>
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
-			<if test="usersId != null and usersId != ''">
+			<if test="userId != null and userId != ''">
 				AND a.user_id = #{userId}
 			</if>
 			<if test="serviceContent != null and serviceContent != ''">
