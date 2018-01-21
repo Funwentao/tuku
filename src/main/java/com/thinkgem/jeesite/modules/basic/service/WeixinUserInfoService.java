@@ -117,6 +117,9 @@ public class WeixinUserInfoService extends CrudService<WeixinUserInfoDao, Weixin
 		return dao.getUserZZGradeAll();
 	}
 
+	public String getUserName(String openId){
+		return dao.getUserName(openId);
+	}
 
 
 

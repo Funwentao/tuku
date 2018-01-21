@@ -162,10 +162,10 @@ public class GallerysFrontController extends BaseController {
      */
     @ResponseBody
     @RequestMapping(value = "getUserInfoByOpenId")
-    public HashMap<String, String> getUserInfoByOpenId(HttpSession session,HttpServletRequest request, HttpServletResponse response) {
+    public HashMap<String, String> getUserInfoByOpenId(HttpSession session,String openId,HttpServletRequest request, HttpServletResponse response) {
         HashMap<String,String> jsonMap = new HashMap<String, String>();
         WeixinUserInfo wxUser = (WeixinUserInfo)session.getAttribute("wxUser");
-        String openId = wxUser.getOpenid();
+//        String openId = wxUser.getOpenid();
         WeixinUserInfo weixinUserInfo = weixinUserInfoService.getUserInfoByOpenId(openId);
 
         jsonMap.put("img",weixinUserInfo.getHeadimgurl());
@@ -418,7 +418,7 @@ public class GallerysFrontController extends BaseController {
             for (int i = 0; i < weixinUserInfoList.size(); i++) {
                 String openid = weixinUserInfoList.get(i).getOpenid();
                 if (wxMpUser.getOpenId().equals(openid)) {
-                    return "redirect:http://p.handanyida.top/gg/index" ;
+                    return "http://p.handanyida.top/gg/index" ;
                 }
             }
             WeixinUserInfo weixinUserInfo = new WeixinUserInfo();

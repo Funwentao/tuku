@@ -624,7 +624,11 @@
 			<artifactId>spring-boot</artifactId>
 			<version>1.5.8.RELEASE</version>
 		</dependency>
-
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>4.5.4</version>
+		</dependency>
 		<!-- 自定义jar依赖包
 		<dependency>
 			<groupId>com.thinkgem.jeesite</groupId>

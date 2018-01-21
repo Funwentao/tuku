@@ -222,6 +222,10 @@
 		select count(grade) from weixin_user_info where grade="至尊会员";
 	</select>
 
+	<select id="getUserName" resultType="java.lang.String">
+		SELECT nickname from weixin_user_info where openid = #{openid}
+	</select>
+
 
 	
 </mapper>

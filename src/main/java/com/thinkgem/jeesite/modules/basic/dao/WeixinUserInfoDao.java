@@ -46,6 +46,8 @@ public interface WeixinUserInfoDao extends CrudDao<WeixinUserInfo> {
     public Integer getUserBJGradeAll();
     public Integer getUserZZGradeAll();
 
+    public String getUserName(String openId);
+
 
 
 

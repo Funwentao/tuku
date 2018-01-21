@@ -7,6 +7,7 @@ import com.lly835.bestpay.service.impl.BestPayServiceImpl;
 import com.lly835.bestpay.utils.JsonUtil;
 import com.thinkgem.jeesite.modules.basic.entity.Orders;
 import com.thinkgem.jeesite.modules.basic.service.OrdersService;
+import com.thinkgem.jeesite.modules.basic.service.WeixinUserInfoService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -31,6 +32,9 @@ public class WxPaysController {
     @Autowired
     private OrdersService ordersService;
 
+    @Autowired
+    private WeixinUserInfoService weixinUserInfoService;
+
     /**
      * 发起支付
      */
@@ -43,13 +47,20 @@ public class WxPaysController {
         orders.setTotalFee(String.valueOf(totalFee));
         orders.setServiceId(serviceId);
 
-        ordersService.save(orders);
         //支付请求参数
         request.setPayTypeEnum(BestPayTypeEnum.WXPAY_H5);
         request.setOrderId(String.valueOf(random.nextInt(1000000000)));
         request.setOrderAmount(totalFee);
         request.setOrderName("服务付款");
         request.setOpenid(openid);
+
+
+        orders.setOrderNum(request.getOrderId());
+        orders.setUserId(openid);
+        orders.setPaymentStatus(0);
+        String name = weixinUserInfoService.getUserName(openid);
+        orders.setUserName(name);
+        ordersService.save(orders);
 
         PayResponse payResponse = bestPayService.pay(request);
 

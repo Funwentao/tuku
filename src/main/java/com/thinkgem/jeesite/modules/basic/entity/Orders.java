@@ -19,7 +19,7 @@ public class Orders extends DataEntity<Orders> {
 	private String userId;		// 用户ID
 	private String orderNum;		// 订单编号
 	private String serviceId;		// 服务ID
-	private String paymentStatus;		// 状态
+	private Integer paymentStatus;		// 状态
 	private String status;		// 状态.
 	private Date beginInDate; //开始时间
 	private Date endInDate;  //结束时间
@@ -122,16 +122,15 @@ public class Orders extends DataEntity<Orders> {
 	public void setServiceId(String serviceId) {
 		this.serviceId = serviceId;
 	}
-	
-	@Length(min=1, max=11, message="状态长度必须介于 1 和 11 之间")
-	public String getPaymentStatus() {
+
+	public Integer getPaymentStatus() {
 		return paymentStatus;
 	}
 
-	public void setPaymentStatus(String paymentStatus) {
+	public void setPaymentStatus(Integer paymentStatus) {
 		this.paymentStatus = paymentStatus;
 	}
-	
+
 	public String getStatus() {
 		return status;
 	}
