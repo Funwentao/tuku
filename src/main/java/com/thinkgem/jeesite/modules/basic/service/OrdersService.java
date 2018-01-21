@@ -65,5 +65,9 @@ public class OrdersService extends CrudService<OrdersDao, Orders> {
 		return dao.getTotalFeeAll();
 	}
 
+	public List<Orders> findOrderById(Orders orders){
+		return dao.findOrderById(orders);
+	}
+
 
 }

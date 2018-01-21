@@ -180,8 +180,7 @@ public class GallerysFrontController extends BaseController {
             Orders orders = new Orders();
             orders.setUserId(openId);
             //需要根据openId查询状态为1，然后根据update_date排序，返回第一个
-            List<Orders> ordersList = ordersService.findList(orders);
-
+            List<Orders> ordersList = ordersService.findOrderById(orders);
             java.util.Collections.sort(ordersList, new Comparator<Orders>() {
                     @Override
                     public int compare(Orders o1, Orders o2) {

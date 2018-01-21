@@ -7,6 +7,8 @@ import com.thinkgem.jeesite.common.persistence.CrudDao;
 import com.thinkgem.jeesite.common.persistence.annotation.MyBatisDao;
 import com.thinkgem.jeesite.modules.basic.entity.Orders;
 
+import java.util.List;
+
 /**
  * 订单表DAO接口
  * @version 2018-01-10
@@ -23,5 +25,8 @@ public interface OrdersDao extends CrudDao<Orders> {
     public Integer getTotalFeeDay();
     public Integer getTotalFeeMonth();
     public Integer getTotalFeeAll();
+
+    public List<Orders> findOrderById(Orders orders);
+
 	
 }

@@ -140,6 +140,7 @@
 		select sum(total_fee) from orders WHERE payment_status = 1
 	</select>
 
-
-
+	<select id="findOrderById" resultType="Orders">
+		SELECT * FROM orders WHERE user_id = #{userId} AND payment_status != 0
+	</select>
 </mapper>
