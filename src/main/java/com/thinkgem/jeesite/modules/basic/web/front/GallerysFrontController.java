@@ -67,7 +67,9 @@ public class GallerysFrontController extends BaseController {
      * 删除收藏
      */
     @RequestMapping("deleteCollections")
-    public void deleteCollections(HttpSession session,String openId,String galleryId,HttpServletRequest request, HttpServletResponse response) {
+    public void deleteCollections(HttpSession session,String galleryId,HttpServletRequest request, HttpServletResponse response) {
+        WeixinUserInfo wxUser = (WeixinUserInfo)session.getAttribute("wxUser");
+        String openId = wxUser.getOpenid();
         Collections collections = new Collections();
         collections.setUserId(openId);
         collections.setGalleryId(galleryId);
@@ -118,7 +120,7 @@ public class GallerysFrontController extends BaseController {
      */
     @ResponseBody
     @RequestMapping(value = "getGalleryById")
-    public HashMap<String, Object> getGalleryById(String id, HttpSession session,String openId, HttpServletRequest request, HttpServletResponse response) {
+    public HashMap<String, Object> getGalleryById(String id, HttpSession session, HttpServletRequest request, HttpServletResponse response) {
         HashMap<String, Object> jsonMap = new HashMap<String, Object>();
         Gallery g = galleryService.getGalleryById(id);
         List<Gallery> galleryList = galleryService.findList(g);
@@ -143,10 +145,10 @@ public class GallerysFrontController extends BaseController {
             commentsList.get(i).setRemarks(headImgUrl);
         }
         WeixinUserInfo wxUser = (WeixinUserInfo)session.getAttribute("wxUser");
-//        String openId = wxUser.getOpenid();
-//        String grade = weixinUserInfoService.getGradeByUserId(openId);
+        String openId = wxUser.getOpenid();
+        String grade = weixinUserInfoService.getGradeByUserId(openId);
         galleryService.updateHitsAddOne(id);
-//        jsonMap.put("grade", grade);
+        jsonMap.put("grade", grade);
         jsonMap.put("galleryList",galleryList);
         jsonMap.put("comments", commentsList);
 
@@ -284,10 +286,10 @@ public class GallerysFrontController extends BaseController {
      */
     @ResponseBody
     @RequestMapping(value = "insertComment",method = RequestMethod.POST)
-    public void insertComment(HttpSession session, String commentsContent,String galleryId,String openId,HttpServletRequest request, HttpServletResponse response){
+    public void insertComment(HttpSession session, String commentsContent,String galleryId,HttpServletRequest request, HttpServletResponse response){
         WeixinUserInfo wxUser = (WeixinUserInfo)session.getAttribute("wxUser");
         Comments c = new Comments();
-//        String openId = wxUser.getOpenid();
+        String openId = wxUser.getOpenid();
         c.setGalleryId(galleryId);
         c.setUserId(openId);
         c.setCommentsContent(commentsContent);
@@ -305,9 +307,9 @@ public class GallerysFrontController extends BaseController {
      */
     @ResponseBody
     @RequestMapping(value = "selectLikesByOpenidAndGalleryId",method = RequestMethod.POST)
-    public void selectLikesByOpenidAndGalleryId(HttpSession session,String galleryId,String openId,HttpServletRequest request, HttpServletResponse response){
+    public void selectLikesByOpenidAndGalleryId(HttpSession session,String galleryId,HttpServletRequest request, HttpServletResponse response){
         WeixinUserInfo wxUser = (WeixinUserInfo)session.getAttribute("wxUser");
-//        String openId = wxUser.getOpenid();
+        String openId = wxUser.getOpenid();
         Likes l = new Likes();
         l.setUserId(openId);
         l.setGalleryId(galleryId);
@@ -335,9 +337,9 @@ public class GallerysFrontController extends BaseController {
      */
     @ResponseBody
     @RequestMapping(value = "selectCollectionsByOpenidAndGalleryId",method = RequestMethod.POST)
-    public void selectCollectionsByOpenidAndGalleryId(HttpSession session,String galleryId,String openId,HttpServletRequest request, HttpServletResponse response){
+    public void selectCollectionsByOpenidAndGalleryId(HttpSession session,String galleryId,HttpServletRequest request, HttpServletResponse response){
         WeixinUserInfo wxUser = (WeixinUserInfo)session.getAttribute("wxUser");
-//        String openId = wxUser.getOpenid();
+        String openId = wxUser.getOpenid();
         Collections c = new Collections();
         c.setUserId(openId);
         c.setGalleryId(galleryId);
@@ -365,9 +367,9 @@ public class GallerysFrontController extends BaseController {
 
     @ResponseBody
     @RequestMapping(value = "selectCollectionsByGalleryid")
-    public ArrayList<HashMap>  selectCollectionsByGalleryid(HttpSession session,String openId,HttpServletRequest request, HttpServletResponse response) {
+    public ArrayList<HashMap>  selectCollectionsByGalleryid(HttpSession session,HttpServletRequest request, HttpServletResponse response) {
         WeixinUserInfo wxUser = (WeixinUserInfo) session.getAttribute("wxUser");
-//        String openId = wxUser.getOpenid();
+        String openId = wxUser.getOpenid();
         List<Collections> collectionList = collectionsService.selectCollectionsByOpenid(openId);
         ArrayList<HashMap> jsonList = new ArrayList<HashMap>();
         for (int i = 0; i < collectionList.size(); i++) {
@@ -442,7 +444,7 @@ public class GallerysFrontController extends BaseController {
         WeixinUserInfo wxUser = new WeixinUserInfo();
         wxUser.setOpenid(openId);
         session.setAttribute("wxUser",wxUser);
-        return "redirect:http://p.handanyida.top/gg/index";
+        return "http://p.handanyida.top/gg/index";
     }
 
 }
